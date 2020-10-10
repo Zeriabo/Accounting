@@ -99,7 +99,7 @@ acc.forEach((acco)=> {
 
  
 function fixo(n)
-{ 
+{ console.log("n",n)
     var accba={} 
     var crval,mval,resu= 0
     var mn='';   var balarray=[]
@@ -362,6 +362,7 @@ async activateBalance(){
  n= await  axios.get('http://localhost:4000/getBalance') 
     .then((response) => {
         const data = response.data;
+        console.log(data)
         setTimeout(()=>{this.setState({value:100});},300) 
        
         
@@ -483,7 +484,7 @@ var s= this.state.bs
 
 var dd = null;
 var  cc = null;
-if(s && typeof s[1] != 'undefined'){
+if(s && typeof s[1] !== 'undefined'){
    dd =s[0].debitbook;
    cc = s[1].creditbook;
  
