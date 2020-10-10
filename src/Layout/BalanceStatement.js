@@ -396,19 +396,24 @@ async activateBalance(){
   
 }
 resetstate(e){
+    this.setState({kind:"secondary"})
     this.setState({balancestat:null});
     this.setState({trailstat:null})
     this.DisplayBalanceStatement.dd = null;
-
+    setTimeout(()=>{this.setState({value:100});},300) 
    this.setState({value:0})
    document.getElementById('dvalue').value = null;
    document.getElementById('cvalue').value = null;
   document.getElementById('select2').selectedIndex = 0 
   document.getElementById('select1').selectedIndex = 0 
-
+  setTimeout(() => {
+    this.setState({value: 0});
+  }, 1000)
 } 
 async emptydata(e){
-  
+    this.setState({kind:"danger"})
+    setTimeout(()=>{this.setState({value:100});},300) 
+    setTimeout(()=>{this.setState({value:0});},2000) 
 
     await  axios.post('http://localhost:4000/intializeData')
     .then(() => {
