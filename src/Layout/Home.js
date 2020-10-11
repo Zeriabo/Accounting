@@ -1,6 +1,6 @@
 
 import React, { Component } from 'react'  
-import image from "./bg.jpg" 
+
 
 
 export class Home extends Component {  
@@ -8,7 +8,7 @@ export class Home extends Component {
         return (  
              <div>
               <div><p><font color='red'>Hello babey</font></p></div>
-              <section className="clean-block clean-hero" style={{backgroundImage: `url(${image})`  }}>
+              <section className="clean-block clean-hero" >
             <div className="text"></div>
         </section>
         <section className="clean-block features">

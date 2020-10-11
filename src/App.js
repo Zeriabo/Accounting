@@ -1,5 +1,4 @@
 import React from "react";
-
 import "bootstrap/dist/css/bootstrap.css";
 import "./App.css";
 import Layout from "./Layout/Layout"
@@ -9,7 +8,7 @@ import 'react-notifications/lib/notifications.css';
 
 function App() {
   return (
-    <Layout />
+   <Layout />
   );
 }
 

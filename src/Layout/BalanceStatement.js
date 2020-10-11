@@ -308,7 +308,7 @@ async ViewTrailBalance() {
     this.setState({balancestat:null});
     this.setState({trailstat:null});
     this.setState({kind:"success"})
- var n=  await axios.get('http://localhost:4000/getTrailBalance') // eslint-disable-line no-unused-vars
+ var n=  await axios.get('https://peaceful-falls-65663.herokuapp.com/getTrailBalance') // eslint-disable-line no-unused-vars
  .then((response) => {
 
 
@@ -359,7 +359,7 @@ async activateBalance(){
     this.setState({balancestat:null});
     this.setState({trailstat:null});
    var m,n  // eslint-disable-line no-unused-vars
- n= await  axios.get('http://localhost:4000/getBalance') 
+ n= await  axios.get('https://peaceful-falls-65663.herokuapp.com/getBalance') 
     .then((response) => {
         const data = response.data;
         console.log(data)
@@ -415,7 +415,7 @@ async emptydata(e){
     setTimeout(()=>{this.setState({value:100});},300) 
     setTimeout(()=>{this.setState({value:0});},2000) 
 
-    await  axios.post('http://localhost:4000/intializeData')
+    await  axios.post('https://peaceful-falls-65663.herokuapp.com/intializeData')
     .then(() => {
        
      console.log("Data has been cleared")
@@ -445,7 +445,7 @@ handleSubmit(e) {
             
         }
     
-      return fetch('http://localhost:4000/savedata', {
+      return fetch('https://peaceful-falls-65663.herokuapp.com/savedata', {
         
         method: 'POST',
         body: JSON.stringify(data),

@@ -1,4 +1,3 @@
-
     import React, { Component } from 'react';   
     import Header from './Header'  
     import Footer from './Footer'  
@@ -11,22 +10,26 @@
         loading = () => <div className="animated fadeIn pt-1 text-center">Loading...</div>  
       
         render() {  
-            return (  
-                <div>  
-                    <div id="wrapper">  
-                        
-                        <div id="content-wrapper" className="d-flex flex-column">  
-                            <div id="content">  
+            return ( 
+                 
+                <div >  
+                    <div id="wrapper"  >  
+                    <div id="content-wrapper" className="d-flex flex-column" >  
+                            <div id="content" >  
                                 <Header /> 
-                             
-                                  <Router/>
+                             <div >
+                             <Router/>
+
+                             </div>
+                                  
                                     
                           
                               
                               
+                            </div >  
+                           
                             </div>  
-                            <Footer />  
-                        </div>  
+                              <Footer /> 
                     </div>  
                 </div>  
             )  

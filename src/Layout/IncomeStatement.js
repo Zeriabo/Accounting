@@ -1,6 +1,6 @@
 
 import React, { Component } from 'react'; 
-import image from "../Layout/bg.jpg";
+
 
 export class IncomeStatement extends Component {  
     constructor(props) {
@@ -53,7 +53,7 @@ export class IncomeStatement extends Component {
         return (  
             <div>
             
-            <section className="clean-block clean-hero" style={{backgroundImage: `url(${image})`  }}>
+            <section className="clean-block clean-hero" >
             
             <div className="text"><p><font color='red'><b>Page is under Construction</b></font></p>
     
