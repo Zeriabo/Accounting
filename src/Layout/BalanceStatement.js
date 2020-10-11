@@ -401,7 +401,7 @@ resetstate(e){
     setTimeout(()=>{this.setState({trailstat:null})},300)
     setTimeout(()=>{this.DisplayBalanceStatement.dd = null;},300)
     setTimeout(()=>{this.setState({value:100});},300) 
-   this.setState({value:0})
+   setTimeout(()=>{this.setState({value:0})},300)
    document.getElementById('dvalue').value = null;
    document.getElementById('cvalue').value = null;
   document.getElementById('select2').selectedIndex = 0 
