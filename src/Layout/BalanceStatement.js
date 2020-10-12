@@ -337,12 +337,15 @@ async ViewTrailBalance() {
     clearTimeout(this.myVar);
      this.myVar = setTimeout(()=>{this.setState({value:0})}, 2000);  
    
-    } 
-     console.log("Error retreiving data",err);
+    }else{
+
+        console.log("Error retreiving data",err);
 
      
-     this.setState({trailstat:null})
-
+        this.setState({trailstat:null})
+   
+    } 
+    
 
  });
      
