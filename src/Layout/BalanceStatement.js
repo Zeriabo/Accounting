@@ -308,7 +308,7 @@ async ViewTrailBalance() {
     this.setState({balancestat:null});
     this.setState({trailstat:null});
     this.setState({kind:"success"})
- var n=  await axios.get('/getTrailBalance') // eslint-disable-line no-unused-vars
+ var n=  await axios.get('https://fullstack-accounting-backend.herokuapp.com/getTrailBalance') // eslint-disable-line no-unused-vars
  .then((response) => {
 
 
@@ -362,7 +362,7 @@ async activateBalance(){
     this.setState({balancestat:null});
     this.setState({trailstat:null});
    var m,n  // eslint-disable-line no-unused-vars
- n= await  axios.get('/getBalance') 
+ n= await  axios.get('https://fullstack-accounting-backend.herokuapp.com/getBalance') 
     .then((response) => {
         const data = response.data;
         console.log(data)
@@ -418,7 +418,7 @@ async emptydata(e){
     setTimeout(()=>{this.setState({value:100});},300) 
     setTimeout(()=>{this.setState({value:0});},2000) 
 
-    await  axios.post('/intializeData')
+    await  axios.post('https://fullstack-accounting-backend.herokuapp.com/intializeData')
     .then(() => {
        
      console.log("Data has been cleared")
@@ -448,7 +448,7 @@ handleSubmit(e) {
             
         }
     
-      return fetch('/savedata', {
+      return fetch('https://fullstack-accounting-backend.herokuapp.com/savedata', {
         
         method: 'POST',
         body: JSON.stringify(data),
