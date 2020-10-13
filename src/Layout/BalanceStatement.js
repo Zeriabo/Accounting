@@ -308,7 +308,7 @@ async ViewTrailBalance() {
     this.setState({balancestat:null});
     this.setState({trailstat:null});
     this.setState({kind:"success"})
- var n=  await axios.get('https://fullstack-accounting-backend.herokuapp.com/getTrailBalance') // eslint-disable-line no-unused-vars
+ var n=  await axios.get('http://localhost:4000/getTrailBalance') // eslint-disable-line no-unused-vars
  .then((response) => {
 
 
@@ -337,11 +337,11 @@ async ViewTrailBalance() {
     clearTimeout(this.myVar);
      this.myVar = setTimeout(()=>{this.setState({value:0})}, 2000);  
    
-    }else{
+    }else{this.setState({value:100});
 
         console.log("Error retreiving data",err);
 
-     
+        setTimeout(()=>{this.setState({value:0});},2000) 
         this.setState({trailstat:null})
    
     } 
@@ -361,8 +361,8 @@ async activateBalance(){
     this.setState({kind:"warning"})
     this.setState({balancestat:null});
     this.setState({trailstat:null});
-   var m,n  // eslint-disable-line no-unused-vars
- n= await  axios.get('https://fullstack-accounting-backend.herokuapp.com/getBalance') 
+   var m,n  
+ n= await  axios.get('http://localhost:4000/getBalance') // eslint-disable-line no-unused-vars
     .then((response) => {
         const data = response.data;
         console.log(data)
@@ -417,8 +417,8 @@ async emptydata(e){
     this.setState({kind:"danger"})
     setTimeout(()=>{this.setState({value:100});},300) 
     setTimeout(()=>{this.setState({value:0});},2000) 
-
-    await  axios.post('https://fullstack-accounting-backend.herokuapp.com/intializeData')
+//('https://fullstack-accounting-backend.herokuapp.com/intializeData')
+    await  axios.post('http://localhost:4000/intializeData')
     .then(() => {
        
      console.log("Data has been cleared")
@@ -448,7 +448,7 @@ handleSubmit(e) {
             
         }
     
-      return fetch('https://fullstack-accounting-backend.herokuapp.com/savedata', {
+      return fetch('http://localhost:4000/savedata', {
         
         method: 'POST',
         body: JSON.stringify(data),
