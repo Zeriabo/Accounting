@@ -17,7 +17,7 @@
                     <div id="content-wrapper" className="d-flex flex-column" >  
                             <div id="content" >  
                                 <Header /> 
-                             <div >
+                             <div style={{backgroundColor: "white", color: "rgb(49, 115, 238)"}}>
                              <Router/>
 
                              </div>

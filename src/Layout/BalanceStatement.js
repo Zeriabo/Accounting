@@ -448,7 +448,7 @@ handleSubmit = async e => {
             
         }
     
-      const response= await fetch('https://fullstack-accounting-backend.herokuapp.com/savedata', {
+    await fetch('https://fullstack-accounting-backend.herokuapp.com/savedata', {
         
         method: 'POST',
         body: JSON.stringify(data),
