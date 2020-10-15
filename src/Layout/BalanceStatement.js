@@ -157,7 +157,7 @@ export class BalanceStatement extends Component {
      
         this.state = { credit: "",debit: "",daccn :null, caccn:null ,dvalue: null,cvalue: null ,accounts:[],d:[],c:[],db:[],dc:[],rows:[],
         
-        balancestat:null,trailstat:null,creditsum:null,debitsum:null,bool:"",value:0,kind:null,//kind: success,info,warning,danger
+        balancestat:null,trailstat:null,creditsum:null,debitsum:null,bool:"",msg:"",value:0,kind:null,//kind: success,info,warning,danger
         columnDefs: [
             
             { headerName: "Account Name", field: "name",},
@@ -308,7 +308,7 @@ async ViewTrailBalance() {
     this.setState({balancestat:null});
     this.setState({trailstat:null});
     this.setState({kind:"success"})
- var n=  await axios.get('http://localhost:4000/getTrailBalance') // eslint-disable-line no-unused-vars
+ var n=  await axios.get('https://fullstack-accounting-backend.herokuapp.com/getTrailBalance') // eslint-disable-line no-unused-vars
  .then((response) => {
 
 
@@ -362,7 +362,7 @@ async activateBalance(){
     this.setState({balancestat:null});
     this.setState({trailstat:null});
    var m,n  
- n= await  axios.get('http://localhost:4000/getBalance') // eslint-disable-line no-unused-vars
+ n= await  axios.get('https://fullstack-accounting-backend.herokuapp.com/getBalance') // eslint-disable-line no-unused-vars
     .then((response) => {
         const data = response.data;
         console.log(data)
@@ -418,7 +418,7 @@ async emptydata(e){
     setTimeout(()=>{this.setState({value:100});},300) 
     setTimeout(()=>{this.setState({value:0});},2000) 
 //('https://fullstack-accounting-backend.herokuapp.com/intializeData')
-    await  axios.post('http://localhost:4000/intializeData')
+    await  axios.post('https://fullstack-accounting-backend.herokuapp.com/intializeData')
     .then(() => {
        
      console.log("Data has been cleared")
@@ -431,7 +431,7 @@ async emptydata(e){
 
    
 }
-handleSubmit(e) {
+handleSubmit = async e => {
     NotificationManager.success('You have added a new book!', 'Successful!', 2000); 
     this.setState({kind:"success"})
     setTimeout(()=>{this.setState({value:100});},300) 
@@ -448,7 +448,7 @@ handleSubmit(e) {
             
         }
     
-      return fetch('http://localhost:4000/savedata', {
+      const response= await fetch('https://fullstack-accounting-backend.herokuapp.com/savedata', {
         
         method: 'POST',
         body: JSON.stringify(data),
@@ -457,10 +457,11 @@ handleSubmit(e) {
             'Content-Type': 'application/json;charset=UTF-8'
           },
     })
+   
     .then(res => res.json())
-
     
-        
+   
+       
         
         
     }
@@ -660,7 +661,7 @@ if(cc){
           </div>
 
           
-          
+          {console.log(this.state.msg)}
               
   
           
