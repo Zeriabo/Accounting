@@ -12,6 +12,9 @@ import 'ag-grid-community/dist/styles/ag-theme-alpine.css';
 // React Notification
 import { NotificationManager } from 'react-notifications';
 
+
+    
+  
  
 function setaccName(n){
     var name="";
@@ -99,7 +102,8 @@ acc.forEach((acco)=> {
 
  
 function fixo(n)
-{ console.log("n",n)
+{ 
+
     var accba={} 
     var crval,mval,resu= 0
     var mn='';   var balarray=[]
@@ -295,8 +299,21 @@ handleCreditAcc(e){
         
     }
      
-handledAccVal(e){
+handledAccVal(e){alert(e.target.value)
     this.setState({dvalue: e.target.value});
+    if (
+
+        /^[0-9]*$/.test(
+          e.target.value,
+        )
+      ) {
+        return null;
+      }
+      if (e.target.value.trim() === '') {
+        alert('value is required') 
+      }
+      this.setState({kind:"danger"})
+      alert('Please enter a valid value')
 }
      
 handlecAccVal(e){
@@ -365,7 +382,7 @@ async activateBalance(){
  n= await  axios.get('https://fullstack-accounting-backend.herokuapp.com/getBalance') // eslint-disable-line no-unused-vars
     .then((response) => {
         const data = response.data;
-        console.log(data)
+        
         setTimeout(()=>{this.setState({value:100});},300) 
        
         
@@ -623,7 +640,7 @@ if(cc){
           </select>   
        </td>
        <td>
-       <input type="number" onChange={this.handlecAccVal.bind(this)} className="form-control" id="cvalue" placeholder="Account Value"></input>  
+       <input type="number" onChange={this.handlecAccVal.bind(this)}  className="form-control" id="cvalue" placeholder="Account Value"></input>  
        </td>
    </tr>
    
@@ -660,8 +677,7 @@ if(cc){
      
           </div>
 
-          
-          {console.log(this.state.msg)}
+         
               
   
           
