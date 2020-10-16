@@ -1,12 +1,16 @@
 
     import React, { Component } from 'react'  
-      
+    import { mdbFooter, mdbContainer, mdbRow, mdbCol } from 'mdbvue';
+    import { SocialIcon } from 'react-social-icons';
+    
     export class Footer extends Component {  
         render() {  
+            
             return (  
+                
                 <div>  
                     
-        <footer className="page-footer font-small teal pt-4">
+        {/* <footer className="page-footer font-small teal pt-2">
         <div class="container-fluid text-center text-md-left">
         <div class="row">
             
@@ -33,7 +37,34 @@
         <div class="footer-copyright text-center py-3">
             <p>© 2020 Copyright Zeriab</p>
         </div>
-    </footer> 
+    </footer>  */}
+    
+    <mdb-footer color="indigo" class="font-small pt-0">
+    <mdb-container >
+      <mdb-row>
+      
+        
+      <mdb-col md="12">
+      <div class="footer-copyright text-center py-3">
+        
+    
+      
+       <SocialIcon url="https://www.linkedin.com/in/zeriab-chiah-017b9a60/" />  &nbsp;
+       <SocialIcon url="https://github.com/Zeriabo/" />&nbsp;
+       <SocialIcon url="https://twitter.com/ZeriabChiah/" />
+       
+
+               
+        </div>
+        </mdb-col>
+      </mdb-row>
+    </mdb-container>
+    <div class="footer-copyright text-center py-3">
+      <mdb-container fluid>
+        &copy; 2020 Copyright: <a href="https://github.com/Zeriabo"> Zeriab</a>
+      </mdb-container>
+    </div>
+  </mdb-footer>
                 
                 </div>  
             )  
