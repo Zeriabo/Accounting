@@ -1,6 +1,5 @@
 
     import React, { Component } from 'react'  
-    import { mdbFooter, mdbContainer, mdbRow, mdbCol } from 'mdbvue';
     import { SocialIcon } from 'react-social-icons';
     
     export class Footer extends Component {  
