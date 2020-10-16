@@ -299,21 +299,9 @@ handleCreditAcc(e){
         
     }
      
-handledAccVal(e){alert(e.target.value)
+handledAccVal(e){
     this.setState({dvalue: e.target.value});
-    if (
-
-        /^[0-9]*$/.test(
-          e.target.value,
-        )
-      ) {
-        return null;
-      }
-      if (e.target.value.trim() === '') {
-        alert('value is required') 
-      }
-      this.setState({kind:"danger"})
-      alert('Please enter a valid value')
+ 
 }
      
 handlecAccVal(e){
@@ -417,11 +405,12 @@ async activateBalance(){
 }
 resetstate(e){
     this.setState({kind:"secondary"})
-    this.setState({balancestat:null});
-    this.setState({trailstat:null})
+    setTimeout(()=>{  this.setState({balancestat:null});},1000)
+     setTimeout(()=>{this.setState({trailstat:null});},1000)
     this.DisplayBalanceStatement.dd = null;
     setTimeout(()=>{this.setState({value:100});},300) 
-   this.setState({value:0})
+    setTimeout(()=>{this.setState({value:0});},2000) 
+   
    document.getElementById('dvalue').value = null;
    document.getElementById('cvalue').value = null;
   document.getElementById('select2').selectedIndex = 0 

@@ -26,7 +26,7 @@ export class Header extends Component {
                                 <li className="nav-item" role="presentation">
                                 <div><a className="nav-link" href="./IncomeStatement">Income Statement</a></div></li>
                                 <li className="nav-item" role="presentation">
-                                <div><a className="nav-link" href="./Result">Result</a></div></li>
+                                <div><a className="nav-link" href="./Result">Cash Flow Statement</a></div></li>
                           <li className="nav-item" role="presentation"></li>
                             <li className="nav-item" role="presentation"></li>
                         </ul>
