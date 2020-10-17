@@ -2,15 +2,15 @@ import React, {Component} from 'react'
 import axios from 'axios';
 import { AgGridReact } from 'ag-grid-react';
 import ProgressBar from 'react-bootstrap/ProgressBar'
-
+// React Notification
+import {NotificationContainer, NotificationManager} from 'react-notifications';
+import 'react-notifications/lib/notifications.css';
 import './CSS/t.css';
 
 import 'ag-grid-community/dist/styles/ag-grid.css';
 import 'ag-grid-community/dist/styles/ag-theme-alpine.css';
 
 
-// React Notification
-import { NotificationManager } from 'react-notifications';
 
 
     
@@ -220,7 +220,26 @@ export class BalanceStatement extends Component {
 
         
     }
-   
+    createNotification = (type) => { 
+        return () => {
+          switch (type) {
+            case 'info':
+              NotificationManager.info('Info message');
+              break;
+            case 'success':
+              NotificationManager.success('Success message', 'Title here');
+              break;
+            case 'warning':
+              NotificationManager.warning('Warning message', 'Close after 3000ms', 3000);
+              break;
+            case 'error':
+              NotificationManager.error('Error message', 'Click me!', 5000, () => {
+                alert('callback');
+              });
+              break;
+          }
+        };
+      };
     setaccNumber(name){
         var n=0;
         switch(name){
@@ -338,14 +357,17 @@ async ViewTrailBalance() {
     })
     .catch((err) => {this.setState({kind:"danger"});
     if(n==='undefined'){ 
+        NotificationManager.error('Error message', 'Database Connection problem!', 3000);
         this.setState({value:100});
     clearTimeout(this.myVar);
      this.myVar = setTimeout(()=>{this.setState({value:0})}, 2000);  
    
-    }else{this.setState({value:100});
-
+    }else{
+        this.setState({kind:"warning"});
+        this.setState({value:100});
+    NotificationManager.warning('Warrning', 'No transactions yet!', 3000);
         console.log("Error retreiving data",err);
-
+      
         setTimeout(()=>{this.setState({value:0});},2000) 
         this.setState({trailstat:null})
    
@@ -370,7 +392,9 @@ async activateBalance(){
  n= await  axios.get('https://fullstack-accounting-backend.herokuapp.com/getBalance') // eslint-disable-line no-unused-vars
     .then((response) => {
         const data = response.data;
-        
+        if(data.length==1){
+            NotificationManager.warning('Warning message', 'No transactions yet!', 3000);
+        }
         setTimeout(()=>{this.setState({value:100});},300) 
        
         
@@ -390,10 +414,13 @@ async activateBalance(){
         
            },1999)
  
-   
+
        })
-    .catch((err) => {  
-        if(n==='undefined'){this.setState({kind:"danger"}); this.setState({value:100});
+    .catch((err) => {      
+        if(n==='undefined'){
+            NotificationManager.error('Error message', 'Database Connection problem!', 3000);
+        this.setState({kind:"danger"}); this.setState({value:100});
+       
         clearTimeout(this.myVar);
          this.myVar = setTimeout(()=>{this.setState({value:0})}, 2000);   }
 
@@ -443,7 +470,8 @@ handleSubmit = async e => {
     setTimeout(()=>{this.setState({value:100});},300) 
     setTimeout(()=>{this.setState({value:0});},2000) 
         e.preventDefault();
-     
+    
+        
         let data = {
             "credit": this.state.credit,
             "cAccNo": this.state.caccn,
@@ -640,7 +668,7 @@ if(cc){
  </tr>
 <tr  className="table-info"><th scope="col" colSpan='4'><font  size = '4' color='#2e20a4'>View Trail and Balance Sheet</font></th></tr>
  
- <tr><td>   <button type="submit" onClick={this.ViewTrailBalance.bind(this)}  className="btn btn-outline-info"> View Trail Balance </button></td>
+ <tr><td>   <button type="submit" onClick={this.ViewTrailBalance.bind(this)}  className="btn btn-outline-info"> View Trail Sheet </button></td>
 
  <td><button type="submit" onClick={this.activateBalance.bind(this)}   className="btn btn-outline-info"> View Balance Sheet</button></td></tr>
  <tr><td colSpan='2'> <button type="reset"  onClick={this.emptydata.bind(this)} className="btn btn-outline-danger">Reset Database</button></td></tr>
@@ -653,7 +681,7 @@ if(cc){
                 </section>       
            
            
-          
+                <NotificationContainer/>
           
            <div> 
            {(this.state.value!==0)?  <ProgressBar animated variant={this.state.kind} now={this.state.value} /> : null}

@@ -5,6 +5,7 @@ import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 import 'font-awesome/css/font-awesome.min.css';
+import 'react-notifications/lib/notifications.css';
 
 ReactDOM.render(
   <BrowserRouter>
