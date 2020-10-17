@@ -17,13 +17,13 @@ export class Home extends Component {
                     <tr>
                         <td >
                         This website is made by React and Bootstrap and Express.js backend with a MongoDB Database stored on cloud the code is written
-                         by Javascript ES6 standard, the website 3 pages BalanceStatement and IncomeStatement and Result perform accounting 
+                         by Javascript ES6 standard, the website 3 pages BalanceStatement and IncomeStatement and Cash Flow Statement perform accounting 
                          calculations, for example: In the BalanceStatement page you can enter the debit and the credit of Asset or liability or 
                          shareholder which is selected from the dropbox and the website will perform the calculations by Nodejs (Express), And 
                          insert the result into a MongoDB Database then you can either view the Trail balance sheet or the Balance Statement,
                          BalanceStatement formula=>Assets=(Liabilities+ Equity)
 </td></tr>
-<tr><td><br /></td></tr>
+<tr><td></td></tr>
 <tr>
 <td>
 In the income statement page, the user inserts the debit and the credit of the operating and non-operating activities by selecting them from the dropbox and then viewing the profit and loss. In the Result page 
