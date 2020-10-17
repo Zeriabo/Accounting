@@ -1,6 +1,6 @@
 
 import React, { Component } from 'react'  
-
+import './CSS/t.css'
 
 
 export class Home extends Component {  
@@ -11,27 +11,36 @@ export class Home extends Component {
               <section className="clean-block clean-hero" >
             <div  className="text"  >
                 <br />   <br />
-                <p><h4><b><u>MERN CRUD Accounting</u></b></h4>
-        <pre>This website is made by React and Bootstrap and Express.js backend with a MongoDB Database stored on cloud<br />
-
-             the code is written by Javascript ES6 standard, the website 3 pages BalanceStatement and IncomeStatement <br />
-             and Result perform accounting calculations, for example: <br />
-            In the BalanceStatement page you can enter the debit and the credit of Asset or liability or shareholder<br />
-             which is selected from the drop box and the website will perform the calculations by nodejs (Express)<br /> 
-             And insert the result into a Mongodb Database then you can either view the Trail balance sheet or the <br />
-             Balance Statement, BalanceStatement formula => Assets=(Liabilities+Owner’s Equity)<br />
-         
-            In the IncomeStatement page the user inserts the debit and the credit of the operating and non-operating activities <br />
-            by selecting them from the drop box  and then viewing the profit and loss. In the Result page <br />
-            
-            you can view the result of the company activit, IncomeStatement formula => Net Income=(Revenue−Expenses)<br />
-
-            In the Cash Flow Statement page it shows The statement of cash flows, or the cash flow statement,<br />
-             is a financial statement that summarizes the amount of cash and cash equivalents entering and leaving a company.<br />
-
+                <font size="3" face="Courier New" >
+                <table border='0' width="100%">
+                    <tr><th colspan ='2'><center><h1>MERN CRUD Accounting</h1></center></th></tr>
+                    <tr>
+                        <td >
+                        This website is made by React and Bootstrap and Express.js backend with a MongoDB Database stored on cloud the code is written
+                         by Javascript ES6 standard, the website 3 pages BalanceStatement and IncomeStatement and Result perform accounting 
+                         calculations, for example: In the BalanceStatement page you can enter the debit and the credit of Asset or liability or 
+                         shareholder which is selected from the dropbox and the website will perform the calculations by Nodejs (Express), And 
+                         insert the result into a MongoDB Database then you can either view the Trail balance sheet or the Balance Statement,
+                         BalanceStatement formula=>Assets=(Liabilities+ Equity)
+</td></tr>
+<tr><td><br /></td></tr>
+<tr>
+<td>
+In the income statement page, the user inserts the debit and the credit of the operating and non-operating activities by selecting them from the dropbox and then viewing the profit and loss. In the Result page 
+ you can view the result of the company activity, IncomeStatement formula => Net Income=(Revenue−Expenses)
+In the Cash Flow Statement page, it shows The statement of cash flows or the cash flow statement,
+ is a financial statement that summarizes the amount of cash and cash equivalents entering and leaving a company.
 The cash flow statement (CFS) measures how well a company manages its cash position.
-</pre>     
-            </p></div>
+</td>
+
+</tr>
+
+                   
+                </table>
+                </font>
+            
+  
+            </div>
         </section>
         <section className="clean-block features">
             <div className="container">
