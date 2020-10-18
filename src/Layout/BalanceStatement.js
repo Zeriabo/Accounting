@@ -237,6 +237,9 @@ export class BalanceStatement extends Component {
                 alert('callback');
               });
               break;
+
+              default:
+                  return null
           }
         };
       };
@@ -393,7 +396,7 @@ async activateBalance(){
  n= await  axios.get('https://fullstack-accounting-backend.herokuapp.com/getBalance') // eslint-disable-line no-unused-vars
     .then((response) => {
         const data = response.data;
-        if(data.length==1){
+        if(data.length===1){
             NotificationManager.warning('Warning message', 'No transactions yet!', 3000);
         }
         setTimeout(()=>{this.setState({value:100});},300) 
@@ -491,13 +494,13 @@ handleSubmit = async e => {
         this.setState({kind:"danger"})
         return
       } 
-      else if(this.state.credit  == '')
+      else if(this.state.credit  === '')
       {
         NotificationManager.warning('Select a Credit Account!', 'Attention!', 2000); 
         this.setState({kind:"danger"})
         return
       }  
-       else if(this.state.debit == '')
+       else if(this.state.debit === '')
        {
         NotificationManager.warning('Select a Debit Account!', 'Attention!', 2000); 
         this.setState({kind:"danger"})
@@ -516,7 +519,7 @@ handleSubmit = async e => {
        
         NotificationManager.info('Inserting!', 'Status!', 2000); 
         this.setState({kind:"success"}) 
-const response=  await fetch('https://fullstack-accounting-backend.herokuapp.com/savedata', {
+ await fetch('https://fullstack-accounting-backend.herokuapp.com/savedata', {
         
         method: 'POST',
         body: JSON.stringify(data),
