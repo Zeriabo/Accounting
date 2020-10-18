@@ -329,6 +329,7 @@ handlecAccVal(e){
 
 
 async ViewTrailBalance() {
+    
     this.setState({balancestat:null});
     this.setState({trailstat:null});
     this.setState({kind:"success"})
@@ -346,7 +347,7 @@ async ViewTrailBalance() {
      setTimeout(()=>{this.setState({kind:null});},2000)
 
      setTimeout(()=>{this.setState({trailstat:res});},1999)
-    
+     setTimeout(()=>{ NotificationManager.success('Success message', 'Data has been retrieved!', 3000);},1900)
     
    
 
@@ -366,7 +367,7 @@ async ViewTrailBalance() {
         this.setState({kind:"warning"});
         this.setState({value:100});
     NotificationManager.warning('Warrning', 'No transactions yet!', 3000);
-        console.log("Error retreiving data",err);
+       
       
         setTimeout(()=>{this.setState({value:0});},2000) 
         this.setState({trailstat:null})
@@ -414,7 +415,7 @@ async activateBalance(){
         
            },1999)
  
-
+           setTimeout(()=>{ NotificationManager.success('Success message', 'Data has been retrieved!', 3000);},1900)
        })
     .catch((err) => {      
         if(n==='undefined'){
@@ -431,9 +432,14 @@ async activateBalance(){
   
 }
 resetstate(e){
+  
     this.setState({kind:"secondary"})
+    this.setState({dvalue:null})
+    this.setState({cvalue:null})
     setTimeout(()=>{  this.setState({balancestat:null});},1000)
      setTimeout(()=>{this.setState({trailstat:null});},1000)
+     setTimeout(()=>{this.setState({caccn:null});},1000)
+     setTimeout(()=>{this.setState({daccn:null});},1000)
     this.DisplayBalanceStatement.dd = null;
     setTimeout(()=>{this.setState({value:100});},300) 
     setTimeout(()=>{this.setState({value:0});},2000) 
@@ -447,6 +453,7 @@ resetstate(e){
   }, 1000)
 } 
 async emptydata(e){
+    NotificationManager.error('', 'Database has been reseted !', 3000);
     this.setState({kind:"danger"})
     setTimeout(()=>{this.setState({value:100});},300) 
     setTimeout(()=>{this.setState({value:0});},2000) 
@@ -457,7 +464,7 @@ async emptydata(e){
      console.log("Data has been cleared")
    
        })
-    .catch((err) => {
+    .catch((err) => {NotificationManager.warning('Error message', 'Error Reseting database!', 3000);
         console.log("Error Emptying data",err.res);
     });
 
@@ -465,13 +472,38 @@ async emptydata(e){
    
 }
 handleSubmit = async e => {
-    NotificationManager.success('You have added a new book!', 'Successful!', 2000); 
-    this.setState({kind:"success"})
+  
+    
     setTimeout(()=>{this.setState({value:100});},300) 
     setTimeout(()=>{this.setState({value:0});},2000) 
         e.preventDefault();
-    
+     
+       if(this.state.dvalue ==null || isNaN(this.state.dvalue))
+      {
+        NotificationManager.warning('Enter a Valid Debit Value!', 'Attention!', 2000); 
+        this.setState({kind:"danger"})
         
+        return
+      } 
+       else if(this.state.cvalue==null || isNaN(this.state.cvalue))
+       {
+        NotificationManager.warning('Enter a Valid Credit Value!', 'Attention!', 2000); 
+        this.setState({kind:"danger"})
+        return
+      } 
+      else if(this.state.credit  == '')
+      {
+        NotificationManager.warning('Select a Credit Account!', 'Attention!', 2000); 
+        this.setState({kind:"danger"})
+        return
+      }  
+       else if(this.state.debit == '')
+       {
+        NotificationManager.warning('Select a Debit Account!', 'Attention!', 2000); 
+        this.setState({kind:"danger"})
+        return
+      } 
+      
         let data = {
             "credit": this.state.credit,
             "cAccNo": this.state.caccn,
@@ -481,23 +513,22 @@ handleSubmit = async e => {
             "dvalue": this.state.dvalue,
             
         }
-    
-    await fetch('https://fullstack-accounting-backend.herokuapp.com/savedata', {
+       
+        NotificationManager.info('Inserting!', 'Status!', 2000); 
+        this.setState({kind:"success"}) 
+const response=  await fetch('https://fullstack-accounting-backend.herokuapp.com/savedata', {
         
         method: 'POST',
         body: JSON.stringify(data),
         headers: {
             'Accept': 'application/json',
             'Content-Type': 'application/json;charset=UTF-8'
+          
           },
     })
-   
-    .then(res => res.json())
-    
-   
-       
-        
-        
+     .then( NotificationManager.success('Data has been inserted!', 'Successful!', 2000) )
+     .then(this.resetstate())
+
     }
     
  
@@ -613,11 +644,12 @@ if(cc){
       <th scope="col" colSpan='4'><font  size = '4' color='#2e20a4'>Fill the balance Sheet</font></th>
     </tr>  
 </thead>
+
 <tbody>
       <tr>
       <td> <label htmlFor="exampleFormControlInput1"><font color='#2e20a4'><b>Debit Account : </b></font></label></td>
       </tr>
-     
+      
      <tr>
       <td> <label htmlFor="exampleFormControlInput1"><font color='#2e20a4'><select className="form-control" id="select1" onChange={this.handleDebitAcc.bind(this)}>
                <option>Choose</option>
