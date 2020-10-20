@@ -476,7 +476,7 @@ async emptydata(e){
 }
 handleSubmit = async e => {
   
-    
+  
     setTimeout(()=>{this.setState({value:100});},300) 
     setTimeout(()=>{this.setState({value:0});},2000) 
         e.preventDefault();
@@ -505,7 +505,7 @@ handleSubmit = async e => {
         NotificationManager.warning('Select a Debit Account!', 'Attention!', 2000); 
         this.setState({kind:"danger"})
         return
-      } 
+      } else {  setTimeout(()=>{ this.setState({kind:"success"})},150) }
       
         let data = {
             "credit": this.state.credit,
@@ -518,7 +518,7 @@ handleSubmit = async e => {
         }
        
         NotificationManager.info('Inserting!', 'Status!', 2000); 
-        this.setState({kind:"success"}) 
+    
  await fetch('https://fullstack-accounting-backend.herokuapp.com/savedata', {
         
         method: 'POST',
@@ -529,7 +529,7 @@ handleSubmit = async e => {
           
           },
     })
-     .then( NotificationManager.success('Data has been inserted!', 'Successful!', 2000) )
+     .then( setTimeout(()=>{ NotificationManager.success('Success message', 'Data has been inserted!', 2000);},2100) )
      .then(this.resetstate())
 
     }
