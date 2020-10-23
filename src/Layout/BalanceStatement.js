@@ -518,7 +518,7 @@ handleSubmit = async e => {
        
         NotificationManager.info('Inserting!', 'Status!', 2000); 
     
-  const n=  await fetch('https://fullstack-accounting-backend.herokuapp.com/savedata', {
+    await fetch('https://fullstack-accounting-backend.herokuapp.com/savedata', {
         
         method: 'POST',
         body: JSON.stringify(data),
