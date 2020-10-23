@@ -518,7 +518,7 @@ handleSubmit = async e => {
        
         NotificationManager.info('Inserting!', 'Status!', 2000); 
     
-    await fetch('https://fullstack-accounting-backend.herokuapp.com/savedata', {
+        const response =   await fetch('https://fullstack-accounting-backend.herokuapp.com/savedata', {
         
         method: 'POST',
         body: JSON.stringify(data),
@@ -529,10 +529,11 @@ handleSubmit = async e => {
           },
     })
      .then( setTimeout(()=>{ NotificationManager.success('Success message', 'Data has been inserted!', 2000);},2100) )
+   
      .then(this.resetstate())
-     
+   
     }
-    
+  
 
     DisplayBalanceStatement = (props) => {
  

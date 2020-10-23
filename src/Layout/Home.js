@@ -13,8 +13,11 @@ export class Home extends Component {
                 <br />   <br />
                 <font size="3" face="Courier New" >
                 <table border='0' width="100%">
-                    <tr><th colspan ='2'><center><h1>MERN CRUD Accounting</h1></center></th></tr>
-                    <tr>
+                <thead>
+                <tr><th colSpan ='2'><center><h1>MERN CRUD Accounting</h1></center></th></tr>
+                </thead>
+              <tbody>
+              <tr>
                         <td >
                         This website is made by React and Bootstrap and Express.js backend with a MongoDB Database stored on cloud the code is written
                          by Javascript ES6 standard, the website 3 pages BalanceStatement and IncomeStatement and Cash Flow Statement perform accounting 
@@ -35,6 +38,8 @@ The cash flow statement (CFS) measures how well a company manages its cash posit
 
 </tr>
 
+                  </tbody>      
+                    
                    
                 </table>
                 </font>
@@ -69,7 +74,7 @@ The cash flow statement (CFS) measures how well a company manages its cash posit
             <div className="container">
                 <div className="block-heading">
                     <h2 className="text-info">About Us</h2>
-                    <p>This Website is made by Bootstrap and Reactjs with&nbsp; a mongob Database to make accounting calculations&nbsp;</p>
+                    <p>This Website is made by Bootstrap and Reactjs with&nbsp; a mongob Database to do accounting calculations&nbsp;</p>
                 </div>
             </div>
         </section>
