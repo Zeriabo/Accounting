@@ -11,8 +11,6 @@ import 'ag-grid-community/dist/styles/ag-grid.css';
 import 'ag-grid-community/dist/styles/ag-theme-alpine.css';
 
 
-
-
     
   
  
@@ -127,7 +125,8 @@ function fixo(n)
      
 
        
-       accba={name:"Result",mvalue:mval,cvalue:crval,res:(mval>crval)?mval-crval +' Debit':crval-mval+' Credit'}
+       accba={name:"Result",mvalue:mval,cvalue:crval,
+       res:(mval>crval)?mval-crval +' Debit':(mval<crval)?crval-mval+' Credit':"Equal Balance"}
        balarray.push(accba)
       
  return balarray
@@ -519,7 +518,7 @@ handleSubmit = async e => {
        
         NotificationManager.info('Inserting!', 'Status!', 2000); 
     
- await fetch('https://fullstack-accounting-backend.herokuapp.com/savedata', {
+  const n=  await fetch('https://fullstack-accounting-backend.herokuapp.com/savedata', {
         
         method: 'POST',
         body: JSON.stringify(data),
@@ -531,10 +530,10 @@ handleSubmit = async e => {
     })
      .then( setTimeout(()=>{ NotificationManager.success('Success message', 'Data has been inserted!', 2000);},2100) )
      .then(this.resetstate())
-
+     
     }
     
- 
+
     DisplayBalanceStatement = (props) => {
  
   
