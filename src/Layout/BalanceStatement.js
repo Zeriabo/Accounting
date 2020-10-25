@@ -163,27 +163,74 @@ export class BalanceStatement extends Component {
         balancestat:null,trailstat:null,creditsum:null,debitsum:null,bool:"",msg:"",value:0,kind:null,//kind: success,info,warning,danger
         columnDefs: [
             
-            { headerName: "Account Name", field: "name",},
-            { headerName: "Debit Balance", field: "mvalue", },
-            { headerName: "Credit Balance", field: "cvalue", },
-            { headerName: "Result", field: "res", },
+            { headerName: "Account Name", field: "name", cellStyle: {color: 'black', 'background-color': '#5499c7'}},
+            { headerName: "Debit Balance", field: "mvalue",cellStyle: function(params) {
+                
+                if (params.value==0) {
+                    
+                    return {color: 'red', 'background-color': '#5499c7'};
+                } else {
+                    return {color: 'black', 'background-color': '#5499c7'};
+                }
+            }},
+            { headerName: "Credit Balance", field: "cvalue", cellStyle: function(params) {
+                if (params.value==0) {
+                    
+                    return {color: 'red', 'background-color': '#5499c7'};
+                } else {
+                    return {color: 'black', 'background-color': '#5499c7'};
+                }
+            }},
+            { headerName: "Result", field: "res",   cellStyle: function(params) {
+                
+                if (params.value=='Equal Balance') {
+                    
+                    return { 'background-color': '#FFC300','font-weight':' bold'};
+                } else {
+                    return {'background-color': '#5499c7','font-weight':' bold'};
+                }
+            }},
             
         
-     
+     //{'background-color': '#5499c7','font-weight':' bold'}
             
           ],
           columnDefs2: [
             
-            { headerName: "Account Debit Name", field: "mname",},
-            { headerName: "Account Credit Name", field: "dname", },
-            { headerName: "Debit Balance", field: "mvalue", },
-            { headerName: "Credit Balance", field: "cvalue", },
-            { headerName: "Result", field: "res", },
+            { headerName: "Account Debit Name", field: "mname",cellStyle: {color: 'black', 'background-color': '#5499c7'}},
+            { headerName: "Account Credit Name", field: "dname", cellStyle: {color: 'black', 'background-color': '#5499c7'}},
+            { headerName: "Debit Balance", field: "mvalue",cellStyle: function(params) {
+                
+                if (params.value==0) {
+                    
+                    return {color: 'red', 'background-color': '#5499c7'};
+                } else {
+                    return {color: 'black', 'background-color': '#5499c7'};
+                }
+            } },
+            { headerName: "Credit Balance", field: "cvalue",cellStyle: function(params) {
+                if (params.value==0) {
+                    
+                    return {color: 'red', 'background-color': '#5499c7'};
+                } else {
+                    return {color: 'black', 'background-color': '#5499c7'};
+                }
+            } },
+            { headerName: "Result", field: "res",  cellStyle: {'background-color': '#5499c7','font-weight':' bold'}},
             
         
      
             
           ],
+
+           rowClassRules: {
+        'sick-days-warning': function (params) {
+          var mval = params.data.mvalue;
+
+          return mval <1000;
+        },
+        'sick-days-breach': 'data.mvalue >= 1000',
+      },
         };
 
       
@@ -518,7 +565,7 @@ handleSubmit = async e => {
        
         NotificationManager.info('Inserting!', 'Status!', 2000); 
     
-        const response =   await fetch('https://fullstack-accounting-backend.herokuapp.com/savedata', {
+  const response=        await fetch('https://fullstack-accounting-backend.herokuapp.com/savedata', {
         
         method: 'POST',
         body: JSON.stringify(data),
@@ -528,10 +575,18 @@ handleSubmit = async e => {
           
           },
     })
-     .then( setTimeout(()=>{ NotificationManager.success('Success message', 'Data has been inserted!', 2000);},2100) )
-   
-     .then(this.resetstate())
-   
+    
+    .then( setTimeout(()=>{ NotificationManager.success('Success message', 'Data has been inserted!', 2000);},2100),this.resetstate() )
+
+    .catch(error => {
+        
+        console.error('There was an error!', error);
+        NotificationManager.error("error", 'Click me!', 5000, () => {
+            alert('Error!');
+          });
+         return
+    });
+
     }
   
 
@@ -592,12 +647,14 @@ if(cc){
 
 
  if((dd && cc )|| this.state.balancestat){  return ( 
-    <div className="ag-theme-alpine" style={ {height: '400px', width: '900px', display:"inline-block"} }>
+    <div className="ag-theme-alpine" style={ {height: '400px', width: '800px', display:"inline-block"} }>
+        
     <AgGridReact
         columnDefs={this.state.columnDefs}
         groupIncludeFooter={true}
         groupIncludeTotalFooter={true}
        rowData={this.state.balancestat}
+       rowClassRules={this.state.balancestat}
   
                 >
     </AgGridReact>
