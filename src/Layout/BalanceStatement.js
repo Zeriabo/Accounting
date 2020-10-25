@@ -166,7 +166,7 @@ export class BalanceStatement extends Component {
             { headerName: "Account Name", field: "name", cellStyle: {color: 'black', 'background-color': '#5499c7'}},
             { headerName: "Debit Balance", field: "mvalue",cellStyle: function(params) {
                 
-                if (params.value==0) {
+                if (params.value===0) {
                     
                     return {color: 'red', 'background-color': '#5499c7'};
                 } else {
@@ -174,7 +174,7 @@ export class BalanceStatement extends Component {
                 }
             }},
             { headerName: "Credit Balance", field: "cvalue", cellStyle: function(params) {
-                if (params.value==0) {
+                if (params.value===0) {
                     
                     return {color: 'red', 'background-color': '#5499c7'};
                 } else {
@@ -183,7 +183,7 @@ export class BalanceStatement extends Component {
             }},
             { headerName: "Result", field: "res",   cellStyle: function(params) {
                 
-                if (params.value=='Equal Balance') {
+                if (params.value==='Equal Balance') {
                     
                     return { 'background-color': '#FFC300','font-weight':' bold'};
                 } else {
@@ -201,7 +201,7 @@ export class BalanceStatement extends Component {
             { headerName: "Account Credit Name", field: "dname", cellStyle: {color: 'black', 'background-color': '#5499c7'}},
             { headerName: "Debit Balance", field: "mvalue",cellStyle: function(params) {
                 
-                if (params.value==0) {
+                if (params.value===0) {
                     
                     return {color: 'red', 'background-color': '#5499c7'};
                 } else {
@@ -209,7 +209,7 @@ export class BalanceStatement extends Component {
                 }
             } },
             { headerName: "Credit Balance", field: "cvalue",cellStyle: function(params) {
-                if (params.value==0) {
+                if (params.value===0) {
                     
                     return {color: 'red', 'background-color': '#5499c7'};
                 } else {
@@ -565,7 +565,7 @@ handleSubmit = async e => {
        
         NotificationManager.info('Inserting!', 'Status!', 2000); 
     
-  const response=        await fetch('https://fullstack-accounting-backend.herokuapp.com/savedata', {
+        await fetch('https://fullstack-accounting-backend.herokuapp.com/savedata', {
         
         method: 'POST',
         body: JSON.stringify(data),
