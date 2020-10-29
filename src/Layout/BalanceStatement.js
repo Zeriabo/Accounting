@@ -105,6 +105,7 @@ function fixo(n)
     var accba={} 
     var crval,mval,resu= 0
     var mn='';   var balarray=[]
+    
     n.forEach((accb)=>{
      mn=setaccName(accb._id);
    
@@ -128,7 +129,7 @@ function fixo(n)
        accba={name:"Result",mvalue:mval,cvalue:crval,
        res:(mval>crval)?mval-crval +' Debit':(mval<crval)?crval-mval+' Credit':"Equal Balance"}
        balarray.push(accba)
-      
+
  return balarray
 }
 
@@ -182,13 +183,18 @@ export class BalanceStatement extends Component {
                 }
             }},
             { headerName: "Result", field: "res",   cellStyle: function(params) {
-                
+
                 if (params.value==='Equal Balance') {
                     
                     return { 'background-color': '#FFC300','font-weight':' bold'};
-                } else {
-                    return {'background-color': '#5499c7','font-weight':' bold'};
+                } else 
+              if((typeof params.value === 'string') && (params.value.indexOf("Debit")!==-1))
+              {
+                   return {'background-color': '#FF5733','font-weight':' bold'};
                 }
+                 else    if(typeof params.value === 'string' && params.value.indexOf("Credit")){
+                     return {'background-color': '#36cc11','font-weight':' bold'};
+                 }
             }},
             
         
@@ -200,7 +206,7 @@ export class BalanceStatement extends Component {
             { headerName: "Account Debit Name", field: "mname",cellStyle: {color: 'black', 'background-color': '#5499c7'}},
             { headerName: "Account Credit Name", field: "dname", cellStyle: {color: 'black', 'background-color': '#5499c7'}},
             { headerName: "Debit Balance", field: "mvalue",cellStyle: function(params) {
-                
+               
                 if (params.value===0) {
                     
                     return {color: 'red', 'background-color': '#5499c7'};
@@ -378,7 +384,7 @@ handlecAccVal(e){
 
 
 async ViewTrailBalance() {
-    
+    this.DisplayBalanceStatement.dd = null;
     this.setState({balancestat:null});
     this.setState({trailstat:null});
     this.setState({kind:"success"})
@@ -449,7 +455,7 @@ async activateBalance(){
        
         
        m= fixo(data);
-    
+   
        setTimeout(() => {
         this.setState({value: 0});
       }, 2000)
@@ -506,7 +512,7 @@ async emptydata(e){
     this.setState({kind:"danger"})
     setTimeout(()=>{this.setState({value:100});},300) 
     setTimeout(()=>{this.setState({value:0});},2000) 
-//('https://fullstack-accounting-backend.herokuapp.com/intializeData')
+
     await  axios.post('https://fullstack-accounting-backend.herokuapp.com/intializeData')
     .then(() => {
        

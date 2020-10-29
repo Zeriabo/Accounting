@@ -30,7 +30,7 @@ export class Home extends Component {
 <tr>
 <td>
 In the income statement page, the user inserts the debit and the credit of the operating and non-operating activities by selecting them from the dropbox and then viewing the profit and loss. In the Result page 
- you can view the result of the company activity, <br />IncomeStatement formula => Net Income=(Revenue−Expenses)
+ you can view the result of the company activity, IncomeStatement formula => Net Income=(Revenue−Expenses)<br />
 In the Cash Flow Statement page, it shows The statement of cash flows or the cash flow statement,
  is a financial statement that summarizes the amount of cash and cash equivalents entering and leaving a company.
 The cash flow statement (CFS) measures how well a company manages its cash position.
