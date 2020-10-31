@@ -388,12 +388,23 @@ async ViewTrailBalance() {
     this.setState({balancestat:null});
     this.setState({trailstat:null});
     this.setState({kind:"success"})
- var n=  await axios.get('https://fullstack-accounting-backend.herokuapp.com/getTrailBalance') // eslint-disable-line no-unused-vars
+
+ 
+ var n=  await axios.get('http://localhost:4000/getTrailBalance', {
+	headers: {
+	  'Access-Control-Allow-Origin': 'http://localhost:4000/',
+	}
+	}) // eslint-disable-line no-unused-vars
+
  .then((response) => {
 
-
+    // console.log(response.data);
+    // console.log(response.status);
+    // console.log(response.statusText);
+    // console.log(response.headers);
+    // console.log(response.config);
      const data = response.data;
-
+    console.log(data)
      setTimeout(()=>{this.setState({value:100});},300) 
          
       const res= fixot(data)
@@ -411,24 +422,40 @@ async ViewTrailBalance() {
    
   
     })
-    .catch((err) => {this.setState({kind:"danger"});
-    if(n==='undefined'){ 
+ .catch((err) => {
+     this.setState({kind:"danger"});
+     setTimeout(()=>{this.setState({value:100});},0) 
+ 
+ if(err.response)
+{ if (err.response.status <= 404){  
+   
+
+  NotificationManager.warning('Warrning message', err.response.data, 3000);
+ 
+
+  this.setState({trailstat:null})
+  setTimeout(()=>{this.setState({value:0});},2000) 
+
+}else  if (err.response.status >= 500 && err.response.status < 505){  
+   
+
+    NotificationManager.Error('Error message', err.response.data, 3000);
+   
+  
+    this.setState({trailstat:null})
+    setTimeout(()=>{this.setState({value:0});},2000) 
+  
+  }
+}else    NotificationManager.error('Error message', 'Network Error!', 3000);
+clearTimeout(this.myVar);
+this.myVar = setTimeout(()=>{this.setState({value:0})}, 2000);  
+ if(n==='undefined'){ 
         NotificationManager.error('Error message', 'Database Connection problem!', 3000);
         this.setState({value:100});
     clearTimeout(this.myVar);
      this.myVar = setTimeout(()=>{this.setState({value:0})}, 2000);  
-   
-    }else{
-        this.setState({kind:"warning"});
-        this.setState({value:100});
-    NotificationManager.warning('Warrning', 'No transactions yet!', 3000);
-       
-      
-        setTimeout(()=>{this.setState({value:0});},2000) 
-        this.setState({trailstat:null})
-   
-    } 
     
+    }
 
  });
      
@@ -444,11 +471,17 @@ async activateBalance(){
     this.setState({kind:"warning"})
     this.setState({balancestat:null});
     this.setState({trailstat:null});
-   var m,n  
- n= await  axios.get('https://fullstack-accounting-backend.herokuapp.com/getBalance') // eslint-disable-line no-unused-vars
+   var m,n  //fullstack-accounting-backend.herokuapp.com/
+    n=  await axios.get('http://localhost:4000/getBalance', {
+	headers: {
+	  'Access-Control-Allow-Origin': 'http://localhost:4000/',
+	}
+	}) // eslint-disable-line no-unused-vars
     .then((response) => {
         const data = response.data;
-        if(data.length===1){
+       
+        if(data.length===2){
+           // setTimeout(()=>{this.setState({kind:"danger"});},300) 
             NotificationManager.warning('Warning message', 'No transactions yet!', 3000);
         }
         setTimeout(()=>{this.setState({value:100});},300) 
@@ -472,16 +505,58 @@ async activateBalance(){
  
            setTimeout(()=>{ NotificationManager.success('Success message', 'Data has been retrieved!', 3000);},1900)
        })
-    .catch((err) => {      
+    .catch((err) => {        
         if(n==='undefined'){
             NotificationManager.error('Error message', 'Database Connection problem!', 3000);
         this.setState({kind:"danger"}); this.setState({value:100});
        
         clearTimeout(this.myVar);
-         this.myVar = setTimeout(()=>{this.setState({value:0})}, 2000);   }
+         this.myVar = setTimeout(()=>{this.setState({value:0})}, 2000);  
+         if (err.response.status >= 500 && err.response.status < 505){  
+   
 
+            NotificationManager.Error('Error message', err.response.data, 3000);
+           
+          
+         
+            setTimeout(()=>{this.setState({value:0});},2000) 
+          
+          } 
+          
+       
+        }
+        if(err.response)
+        { if (err.response.status <= 404){  
+           
+        
+          NotificationManager.warning('Warrning message', err.response.data, 3000);
+         
+        
+          this.setState({trailstat:null})
+          setTimeout(()=>{this.setState({value:0});},2000) 
+        
+        }else  if (err.response.status >= 500 && err.response.status < 505){  
+           
+        
+            NotificationManager.Error('Error message', err.response.data, 3000);
+           
+          
+            this.setState({trailstat:null})
+            setTimeout(()=>{this.setState({value:0});},2000) 
+          
+          }
+        }else    NotificationManager.error('Error message', 'Network Error!', 3000);
+        clearTimeout(this.myVar);
+        this.myVar = setTimeout(()=>{this.setState({value:0})}, 2000);  
+         if(n==='undefined'){ 
+                NotificationManager.error('Error message', 'Database Connection problem!', 3000);
+                this.setState({value:100});
+            clearTimeout(this.myVar);
+             this.myVar = setTimeout(()=>{this.setState({value:0})}, 2000);  
             
-        console.log("Error retreiving data",err);
+            }
+       
+    
     });
 
   
@@ -557,7 +632,13 @@ handleSubmit = async e => {
         NotificationManager.warning('Select a Debit Account!', 'Attention!', 2000); 
         this.setState({kind:"danger"})
         return
-      } else {  setTimeout(()=>{ this.setState({kind:"success"})},150) }
+      } 
+      else if(this.state.debit === this.state.credit)
+      {
+       NotificationManager.warning('You cant make a a transaction with the same account!', 'Attention!', 2000); 
+       this.setState({kind:"danger"})
+       return
+     } else {  setTimeout(()=>{ this.setState({kind:"success"})},150) }
       
         let data = {
             "credit": this.state.credit,
@@ -571,24 +652,47 @@ handleSubmit = async e => {
        
         NotificationManager.info('Inserting!', 'Status!', 2000); 
     
-        await fetch('https://fullstack-accounting-backend.herokuapp.com/savedata', {
-        
-        method: 'POST',
+    //fullstack-accounting-backend.herokuapp.com/savedata'
+    
+       await axios.post('https://localhost:4000/savedata', {
+        // check if two accounts are the same and send a message to the client 
+   
         body: JSON.stringify(data),
         headers: {
             'Accept': 'application/json',
-            'Content-Type': 'application/json;charset=UTF-8'
+            'Content-Type': 'application/json;charset=UTF-8',
+            'Access-Control-Allow-Origin':' *'
           
           },
     })
-    
-    .then( setTimeout(()=>{ NotificationManager.success('Success message', 'Data has been inserted!', 2000);},2100),this.resetstate() )
 
+    .then( setTimeout(()=>{ NotificationManager.success('Success message', 'Data has been inserted!', 2000);},2100),this.resetstate() )
+    .then(result => {
+        if (result.data.errors) {
+            return this.setState({msg:result.data});
+        }})
+        console.log(this.state.msg)
     .catch(error => {
+              if (error.response.status >= 500 && error.response.status < 505){  
+                  
+                NotificationManager.error("error", 'Click me!', 5000, () => {
+                    alert(error.response.data);
+                  });
+                 return
+
+              }
+        if(error.response) { 
+            /* the request was made and the server responded
+            with a status code that falls out of the range of 2xx */
+            console.log("Error While inserting ! ",error.response.data)
+          }
+        //   if (err.response.status >= 500 && err.response.status < 505){  
+           
         
+        //     NotificationManager.Error('Error message', err.response.data, 3000);
         console.error('There was an error!', error);
         NotificationManager.error("error", 'Click me!', 5000, () => {
-            alert('Error!');
+            alert(error);
           });
          return
     });
