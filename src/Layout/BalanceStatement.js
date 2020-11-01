@@ -390,7 +390,7 @@ async ViewTrailBalance() {
     this.setState({kind:"success"})
 
  //'http://localhost:4000/getTrailBalance'
- var n=  await axios.get('https://fullstack-accounting-backend.herokuapp.com//getTrailBalance'
+ var n=  await axios.get('https://fullstack-accounting-backend.herokuapp.com/getTrailBalance'
 //  , {
 // 	headers: {
 // 	  'Access-Control-Allow-Origin': 'http://localhost:4000/',
@@ -658,7 +658,7 @@ handleSubmit = async e => {
     
     //fullstack-accounting-backend.herokuapp.com/savedata'
     
-       await axios.post('https://fullstack-accounting-backend.herokuapp.com/fullstack-accounting-backend.herokuapp.com//savedata', {
+       await axios.post('https://fullstack-accounting-backend.herokuapp.com/savedata', {
         // check if two accounts are the same and send a message to the client 
    
         body: JSON.stringify(data),
