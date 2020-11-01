@@ -389,12 +389,14 @@ async ViewTrailBalance() {
     this.setState({trailstat:null});
     this.setState({kind:"success"})
 
- 
- var n=  await axios.get('http://fullstack-accounting-backend.herokuapp.com//getTrailBalance', {
-	headers: {
-	  'Access-Control-Allow-Origin': 'http://localhost:4000/',
-	}
-	}) // eslint-disable-line no-unused-vars
+ //'http://localhost:4000/getTrailBalance'
+ var n=  await axios.get('https://fullstack-accounting-backend.herokuapp.com//getTrailBalance'
+//  , {
+// 	headers: {
+// 	  'Access-Control-Allow-Origin': 'http://localhost:4000/',
+// 	}
+//     }
+    ) // eslint-disable-line no-unused-vars
 
  .then((response) => {
 
@@ -471,12 +473,14 @@ async activateBalance(){
     this.setState({kind:"warning"})
     this.setState({balancestat:null});
     this.setState({trailstat:null});
-   var m,n  //fullstack-accounting-backend.herokuapp.com/
-    n=  await axios.get('http://fullstack-accounting-backend.herokuapp.com/getBalance', {
-	headers: {
-	  'Access-Control-Allow-Origin': 'http://localhost:4000/',
-	}
-	}) // eslint-disable-line no-unused-vars
+   var m,n  //http://localhost:4000/getBalance
+    n=  await axios.get('https://fullstack-accounting-backend.herokuapp.com/getBalance'
+    // , {
+	// headers: {
+	//   'Access-Control-Allow-Origin': 'http://localhost:4000/',
+	// }
+    // }
+    ) // eslint-disable-line no-unused-vars
     .then((response) => {
         const data = response.data;
        
