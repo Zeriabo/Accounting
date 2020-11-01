@@ -644,7 +644,7 @@ handleSubmit = async e => {
        return
      } else {  setTimeout(()=>{ this.setState({kind:"success"})},150) }
       
-        let data = {
+        let body = {
             "credit": this.state.credit,
             "cAccNo": this.state.caccn,
             "debit":this.state.debit,
@@ -658,25 +658,25 @@ handleSubmit = async e => {
     
     //fullstack-accounting-backend.herokuapp.com/savedata'
     
-      fetch('https://fullstack-accounting-backend.herokuapp.com/savedata', {
+     await axios({
        
         method: 'POST',
-       
+       url:'http://fullstack-accounting-backend.herokuapp.com/savedata',
         headers: {
             'Accept': 'application/json',
             'Content-Type': 'application/json;charset=UTF-8',
             'Access-Control-Allow-Origin':'*'
           
           },
-          body: JSON.stringify(data)
+          data: JSON.stringify(body)
     })
-
     .then( setTimeout(()=>{ NotificationManager.success('Success message', 'Data has been inserted!', 2000);},2100),this.resetstate() )
-    .then(result => {
+    .then(result => {console.log(result)
         if (result.data.errors) {
             return this.setState({msg:result.data});
         }})
-     
+        .then(text => {
+            console.log(text)})
     .catch(error => {
             //   if (error.response.status >= 500 && error.response.status < 505){  
                   
@@ -687,6 +687,16 @@ handleSubmit = async e => {
 
             //   }
         if(error.response) { 
+            if (error.response.status === 404){  
+   
+
+                NotificationManager.warning('Warrning message', error.response.data, 3000);
+               
+              
+        
+                setTimeout(()=>{this.setState({value:0});},2000) 
+              
+              }
             /* the request was made and the server responded
             with a status code that falls out of the range of 2xx */
             console.log("Error While inserting ! ",error.response.data)
