@@ -406,7 +406,7 @@ async ViewTrailBalance() {
     // console.log(response.headers);
     // console.log(response.config);
      const data = response.data;
-    console.log(data)
+   
      setTimeout(()=>{this.setState({value:100});},300) 
          
       const res= fixot(data)
@@ -658,16 +658,17 @@ handleSubmit = async e => {
     
     //fullstack-accounting-backend.herokuapp.com/savedata'
     
-       await axios.post('https://fullstack-accounting-backend.herokuapp.com/savedata', {
-        // check if two accounts are the same and send a message to the client 
-   
-        body: JSON.stringify(data),
+      fetch('https://fullstack-accounting-backend.herokuapp.com/savedata', {
+       
+        method: 'POST',
+       
         headers: {
             'Accept': 'application/json',
             'Content-Type': 'application/json;charset=UTF-8',
-            'Access-Control-Allow-Origin':' *'
+            'Access-Control-Allow-Origin':'*'
           
           },
+          body: JSON.stringify(data)
     })
 
     .then( setTimeout(()=>{ NotificationManager.success('Success message', 'Data has been inserted!', 2000);},2100),this.resetstate() )
@@ -675,16 +676,16 @@ handleSubmit = async e => {
         if (result.data.errors) {
             return this.setState({msg:result.data});
         }})
-        console.log(this.state.msg)
+     
     .catch(error => {
-              if (error.response.status >= 500 && error.response.status < 505){  
+            //   if (error.response.status >= 500 && error.response.status < 505){  
                   
-                NotificationManager.error("error", 'Click me!', 5000, () => {
-                    alert(error.response.data);
-                  });
-                 return
+            //     NotificationManager.error("error", 'Click me!', 5000, () => {
+            //         alert(error.response.data);
+            //       });
+            //      return
 
-              }
+            //   }
         if(error.response) { 
             /* the request was made and the server responded
             with a status code that falls out of the range of 2xx */
