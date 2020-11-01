@@ -644,7 +644,7 @@ handleSubmit = async e => {
        return
      } else {  setTimeout(()=>{ this.setState({kind:"success"})},150) }
       
-        let body = {
+        let data = {
             "credit": this.state.credit,
             "cAccNo": this.state.caccn,
             "debit":this.state.debit,
@@ -658,18 +658,26 @@ handleSubmit = async e => {
     
     //fullstack-accounting-backend.herokuapp.com/savedata'
     
-     await axios({
+    //  await axios({
        
+    //     method: 'POST',
+    //     withCredentials:true,
+    //    url:'http://fullstack-accounting-backend.herokuapp.com/savedata',
+    //     headers: {
+    //         'Accept': 'application/json',
+    //         'Content-Type': 'application/json;charset=UTF-8',
+    //         'Access-Control-Allow-Origin':'*'
+          
+    //       },
+    //       data: JSON.stringify(body)
+    return fetch('http://localhost:4000/savedata', {
+        
         method: 'POST',
-        withCredentials:true,
-       url:'http://fullstack-accounting-backend.herokuapp.com/savedata',
+        body: JSON.stringify(data),
         headers: {
             'Accept': 'application/json',
-            'Content-Type': 'application/json;charset=UTF-8',
-            'Access-Control-Allow-Origin':'*'
-          
+            'Content-Type': 'application/json;charset=UTF-8'
           },
-          data: JSON.stringify(body)
     })
     .then( setTimeout(()=>{ NotificationManager.success('Success message', 'Data has been inserted!', 2000);},2100),this.resetstate() )
     .then(result => {console.log(result)
