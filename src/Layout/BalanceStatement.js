@@ -682,17 +682,9 @@ handleSubmit = async e => {
     })
     .then( setTimeout(()=>{ NotificationManager.success('Success message', 'Data has been inserted!', 2000);},2100),this.resetstate() )
   
-        .then(text => {
-            console.log(text)})
+        
     .catch(error => {
-            //   if (error.response.status >= 500 && error.response.status < 505){  
-                  
-            //     NotificationManager.error("error", 'Click me!', 5000, () => {
-            //         alert(error.response.data);
-            //       });
-            //      return
-
-            //   }
+        
         if(error.response) { 
             if (error.response.status === 404){  
    
