@@ -670,20 +670,18 @@ handleSubmit = async e => {
           
     //       },
     //       data: JSON.stringify(body)
-    return fetch('http://localhost:4000/savedata', {
+    return fetch('http://fullstack-accounting-backend.herokuapp.com/savedata', {
         
         method: 'POST',
         body: JSON.stringify(data),
         headers: {
             'Accept': 'application/json',
-            'Content-Type': 'application/json;charset=UTF-8'
+            'Content-Type': 'application/json;charset=UTF-8',
+            'Access-Control-Allow-Origin':'*'
           },
     })
     .then( setTimeout(()=>{ NotificationManager.success('Success message', 'Data has been inserted!', 2000);},2100),this.resetstate() )
-    .then(result => {console.log(result)
-        if (result.data.errors) {
-            return this.setState({msg:result.data});
-        }})
+  
         .then(text => {
             console.log(text)})
     .catch(error => {
