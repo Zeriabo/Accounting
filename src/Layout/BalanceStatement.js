@@ -681,9 +681,9 @@ handleSubmit = async e => {
     })
     .then( setTimeout(()=>{ NotificationManager.success('Success message', 'Data has been inserted!', 2000);},2100),this.resetstate() )
     .then(result => {console.log(result)
-        if (result.data.errors) {
+       
             return this.setState({msg:result.data});
-        }})
+        })
         .then(text => {
             console.log(text)})
     .catch(error => {
