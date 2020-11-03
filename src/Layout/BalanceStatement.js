@@ -1,54 +1,69 @@
 import React, {Component} from 'react'  
 import axios from 'axios';
+//AgGridReact
 import { AgGridReact } from 'ag-grid-react';
+// Progress Bar
 import ProgressBar from 'react-bootstrap/ProgressBar'
 // React Notification
 import {NotificationContainer, NotificationManager} from 'react-notifications';
+//CSS import
 import 'react-notifications/lib/notifications.css';
 import './CSS/t.css';
-
 import 'ag-grid-community/dist/styles/ag-grid.css';
 import 'ag-grid-community/dist/styles/ag-theme-alpine.css';
 
+/***
+ * Function setaccName to give the alternative name to the number corresponding
+ *  
+ *  
+ */  
+function setaccName(accno)
+{
 
-    
-  
- 
-function setaccName(n){
     var name="";
-    switch(n){
+
+    switch(accno){
+
         case 101:
-         
             name="Bank/Cash at Bank";
             break;
-        case 108:
-        
+
+        case 108:        
             name= "Deferred Expense"; 
             break;
+
         case 110 :
             name="Others";
             break;
+
         case 112:
             name="Accounts Receivable";
             break; 
+
         case 157:
             name="Equipment"; 
             break;
+
         case 130:
             name="Prepaid Insurance"; 
             break;
+
         case 200:
             name="Notes Payable";
             break;
+
         case 201:
             name="Accounts Payable";
             break;
+
         case 209:
             name="Unearned Service Revenue";
             break;
+
         case 230:
             name="Interest Payable";
             break;
+
         case 231:
             name="Deferred Gross profit";
             break;
@@ -56,184 +71,191 @@ function setaccName(n){
         case 300:
             name="Owner Capital";
             break;
+
         case 311:
             name="Share Capital-Ordinary";
             break;
+
         case 320:
             name="Retained Earnings"; 
             break;
+
         case 330:
             name="Capital contribtions";
-        break;
+            break;
+
         case 332:
             name="Dividends";
-        break;
-        default:
+            break;
+
+         default:
             name= ""
-        break;
-       
+            break; 
     }
     return name;
-   } 
+} 
+/***
+ * function which Produce Balance Statement it takes each Account Object from the backend and call setaccName to setnames 
+ * and calculates the total 
+ *   
+ */
+function getTrailBalance(accObj)
+{
 
+   var accobj={}
+   var balance,creditval,debitval = 0 // eslint-disable-line no-unused-vars
+   var creditname,debitname=''; 
+   var accObjArr=[]
 
-function fixot(acc){ //function which take each object and put the credit and debit name and the values and the difference between the values
+ accObj.forEach((acco)=> {
 
-   var accob={}
-   var clc,crval,mval = 0 // eslint-disable-line no-unused-vars
-   var crn,mn=''; // eslint-disable-line no-unused-vars
-   var accobarr=[]
+   debitname=acco.mname;
+   creditname=acco.dname;
+   debitval=acco.mvalue;
+   creditval=acco.dvalue;
+   //Account Object which take the names and the values and calculates the result 
+   accobj={mname:debitname,mvalue:debitval,dname:creditname,cvalue:creditval,
+           res:(debitval>creditval)? balance= debitval-creditval:balance=creditval-debitval}
 
-acc.forEach((acco)=> {
-
-   mn=acco.mname;
-   crn=acco.dname;
-   mval=acco.mvalue;
-   crval=acco.dvalue;
-   accob={mname:mn,mvalue:mval,dname:crn,cvalue:crval,res:(acco.mvalue>acco.dvalue)? clc= acco.mvalue-acco.dvalue:clc=acco.dvalue-acco.mvalue}
-
-   accobarr.push(accob)
+   accObjArr.push(accobj)
    });
  
-   return accobarr
+   return accObjArr
 }
 
- 
-function fixo(n)
+/***
+ * function which Produce Balance Statement it takes each Account Object from the backend and call setaccName  
+ * to setnames and calculates the total   
+ *  
+ */ 
+function getBalanceSheet(accObj)
 { 
-
-    var accba={} 
-    var crval,mval,resu= 0
-    var mn='';   var balarray=[]
+    var balancesheet,resultBalancesheet={} 
+    var creditValue,debitValue,result= 0
+    var name='';   var balanceArray=[]
     
-    n.forEach((accb)=>{
-     mn=setaccName(accb._id);
+    
+    accObj.forEach((accb)=>
+    {
+    name=setaccName(accb._id);
    
-     mval=accb.mvalue;
+    debitValue=accb.mvalue;
 
-     crval=accb.cvalue;
+    creditValue=accb.cvalue;
 
-     resu=(mval>crval)?mval-crval+' Debit':(crval>mval)?crval-mval+' Credit':0;
-   accba={name:mn,mvalue:mval,cvalue:crval,res:resu}
-    balarray.push(accba)
+    result=(debitValue>creditValue)?debitValue-creditValue+' Debit':(creditValue>debitValue)?creditValue-debitValue+' Credit':0;
+
+    balancesheet={name:name,mvalue:debitValue,cvalue:creditValue,res:result}
+
+    balanceArray.push(balancesheet)
 
     });
-    for(var i = 0;i<n.length-1;i++){
-        mval+=n[i].mvalue;
-        crval+=n[i].cvalue;
+// for loop to walk threw the balance array and calculate the sum or debits and the sum of credits
+
+    for(var i = 0;i<balanceArray.length-1;i++)
+    {
+        debitValue+=balanceArray[i].mvalue;
+        creditValue+=balanceArray[i].cvalue;
         
     }
-     
+          
+    resultBalancesheet={ name:"Result",mvalue:debitValue,cvalue : creditValue,res:(debitValue>creditValue) ? 
+                      debitValue-creditValue +' Debit':(debitValue<creditValue)?creditValue-debitValue+' Credit':"Equal Balance"}
 
-       
-       accba={name:"Result",mvalue:mval,cvalue:crval,
-       res:(mval>crval)?mval-crval +' Debit':(mval<crval)?crval-mval+' Credit':"Equal Balance"}
-       balarray.push(accba)
+    balanceArray.push(resultBalancesheet)
 
- return balarray
+ return balanceArray
 }
-
-function compare(a, b) {
-    if(a._id < b._id) { return -1; }
-  else if(a._id > b._id) { return 1; }
-  return 0;
-  }
-  function comparestr(a, b) {
-    // Use toUpperCase() to ignore character casing
-    const accA = a._id.toUpperCase();
-    const accB = b._id.toUpperCase();
-
-    let comparison = 0;
-    if (accA > accB) {
-      comparison = 1;
-    } else if (accA < accB) {
-      comparison = -1;
-    }
-    return comparison;
-  }
  
- 
+/***
+ * Class BalanceStatement
+ *  
+ */  
 export class BalanceStatement extends Component {
     
     constructor(props) {
         super(props);
 
      
-        this.state = { credit: "",debit: "",daccn :null, caccn:null ,dvalue: null,cvalue: null ,accounts:[],d:[],c:[],db:[],dc:[],rows:[],
+    this.state = { credit: "",debit: "",debitAccNo :null, CreditAccNo:null ,debitValue: null,creditValue: null,kind:null,
         
-        balancestat:null,trailstat:null,creditsum:null,debitsum:null,bool:"",msg:"",value:0,kind:null,//kind: success,info,warning,danger
+    debitArr:[],creditArr:[], balancestat:null,trailstat:null,creditsum:null,debitsum:null,value:0,
+        
         columnDefs: [
             
             { headerName: "Account Name", field: "name", cellStyle: {color: 'black', 'background-color': '#5499c7'}},
             { headerName: "Debit Balance", field: "mvalue",cellStyle: function(params) {
                 
-                if (params.value===0) {
-                    
+                if (params.value===0) 
+                {
                     return {color: 'red', 'background-color': '#5499c7'};
-                } else {
+                } 
+                else
+                {
                     return {color: 'black', 'background-color': '#5499c7'};
                 }
             }},
             { headerName: "Credit Balance", field: "cvalue", cellStyle: function(params) {
-                if (params.value===0) {
-                    
+                if (params.value===0) 
+                {                    
                     return {color: 'red', 'background-color': '#5499c7'};
-                } else {
+                } 
+                else 
+                {
                     return {color: 'black', 'background-color': '#5499c7'};
                 }
             }},
             { headerName: "Result", field: "res",   cellStyle: function(params) {
 
-                if (params.value==='Equal Balance') {
-                    
-                    return { 'background-color': '#FFC300','font-weight':' bold'};
-                } else 
-              if((typeof params.value === 'string') && (params.value.indexOf("Debit")!==-1))
-              {
+                if (params.value==='Equal Balance') 
+                {
+                   return { 'background-color': '#FFC300','font-weight':' bold'};
+                } 
+                else 
+                if((typeof params.value === 'string') && (params.value.indexOf("Debit")!==-1))
+                {
                    return {'background-color': '#FF5733','font-weight':' bold'};
                 }
-                 else    if(typeof params.value === 'string' && params.value.indexOf("Credit")){
-                     return {'background-color': '#36cc11','font-weight':' bold'};
-                 }
-            }},
-            
-        
-     //{'background-color': '#5499c7','font-weight':' bold'}
-            
-          ],
+                else 
+                if(typeof params.value === 'string' && params.value.indexOf("Credit"))
+                {
+                    return {'background-color': '#36cc11','font-weight':' bold'};
+                }
+            }},],
           columnDefs2: [
             
             { headerName: "Account Debit Name", field: "mname",cellStyle: {color: 'black', 'background-color': '#5499c7'}},
             { headerName: "Account Credit Name", field: "dname", cellStyle: {color: 'black', 'background-color': '#5499c7'}},
             { headerName: "Debit Balance", field: "mvalue",cellStyle: function(params) {
                
-                if (params.value===0) {
-                    
-                    return {color: 'red', 'background-color': '#5499c7'};
-                } else {
+                if (params.value===0)
+               {
+                   return {color: 'red', 'background-color': '#5499c7'};
+                } 
+                else 
+                {
                     return {color: 'black', 'background-color': '#5499c7'};
                 }
             } },
             { headerName: "Credit Balance", field: "cvalue",cellStyle: function(params) {
-                if (params.value===0) {
-                    
+                if (params.value===0)
+                {                    
                     return {color: 'red', 'background-color': '#5499c7'};
-                } else {
+                } 
+                else 
+                {
                     return {color: 'black', 'background-color': '#5499c7'};
                 }
             } },
-            { headerName: "Result", field: "res",  cellStyle: {'background-color': '#5499c7','font-weight':' bold'}},
-            
-        
-     
-            
+            { headerName: "Result", field: "res",  cellStyle: {'background-color': '#5499c7','font-weight':' bold'}},        
           ],
-
            rowClassRules: {
-        'sick-days-warning': function (params) {
-          var mval = params.data.mvalue;
 
-          return mval <1000;
+        'sick-days-warning': function (params) {
+
+          var debitVal = params.data.mvalue;
+
+          return debitVal <1000;
         },
         'sick-days-breach': 'data.mvalue >= 1000',
       },
@@ -358,179 +380,155 @@ export class BalanceStatement extends Component {
      
 }     
 
- calctrail(a,b){
-    return((a>b)? 'Credit '+(a-b).toString() :(a===b)? '0':'Debit '+(b-a).toString() )
-  }   
-handleDebitAcc(e){
+//  Setting states by the values given in the form
+handleDebitAcc(e)
+{
     this.setState({debit:e.target.value});
-    this.setState({daccn:this.setaccNumber(e.target.value)});
-    
-    
-    }
-handleCreditAcc(e){
-        this.setState({credit:e.target.value});
-        this.setState({caccn:this.setaccNumber(e.target.value)});
+    this.setState({debitAccNo:this.setaccNumber(e.target.value)});
+}
+handleCreditAcc(e)
+{
+    this.setState({credit:e.target.value});
+    this.setState({CreditAccNo:this.setaccNumber(e.target.value)});
         
-    }
-     
-handledAccVal(e){
-    this.setState({dvalue: e.target.value});
- 
 }
      
-handlecAccVal(e){
-    this.setState({cvalue: e.target.value});
+handledAccVal(e)
+{
+    this.setState({debitValue: e.target.value});
+}
+     
+handlecAccVal(e)
+{
+    this.setState({creditValue: e.target.value});
 }   
 
-
-async ViewTrailBalance() {
-    this.DisplayBalanceStatement.dd = null;
+//This function to call the API getTrailBalance to get the Balance Statement data
+async ViewTrailBalance()
+{
     this.setState({balancestat:null});
     this.setState({trailstat:null});
-    this.setState({kind:"success"})
+   
 
- //'http://localhost:4000/getTrailBalance'
- var n=  await axios.get('https://fullstack-accounting-backend.herokuapp.com/getTrailBalance'
-//  , {
-// 	headers: {
-// 	  'Access-Control-Allow-Origin': 'http://localhost:4000/',
-// 	}
-//     }
-    ) // eslint-disable-line no-unused-vars
+ var gettrail=  await axios.get('https://fullstack-accounting-backend.herokuapp.com/getTrailBalance'
+
+    ) 
 
  .then((response) => {
-
-    // console.log(response.data);
-    // console.log(response.status);
-    // console.log(response.statusText);
-    // console.log(response.headers);
-    // console.log(response.config);
-     const data = response.data;
-   
-     setTimeout(()=>{this.setState({value:100});},300) 
-         
-      const res= fixot(data)
-
-     setTimeout(()=>{this.setState({value:0});},2000) 
-     setTimeout(()=>{this.setState({kind:null});},2000)
-
-     setTimeout(()=>{this.setState({trailstat:res});},1999)
-     setTimeout(()=>{ NotificationManager.success('Success message', 'Data has been retrieved!', 3000);},1900)
-    
-   
-
- 
-  
-   
-  
+    if(response.statusText==="OK")
+    { 
+        const data = response.data; 
+        const res= getTrailBalance(data)
+        this.setState({kind:"success"})
+        setTimeout(()=>{this.setState({value:100});},300)
+        setTimeout(()=>{this.setState({trailstat:res});},1999)
+        setTimeout(()=>{ NotificationManager.success('Success message', 'Data has been retrieved!', 3000);},1900)
+        setTimeout(()=>{this.setState({value:0});},2000) 
+        setTimeout(()=>{this.setState({kind:null});},2000)  
+    }else
+    {
+        this.setState({kind:"warning"})
+        setTimeout(()=>{this.setState({value:100});},300)
+        setTimeout(()=>{ NotificationManager.warning('Warning message', response.statusText, 3000);},1900)
+    }
     })
  .catch((err) => {
+
      this.setState({kind:"danger"});
      setTimeout(()=>{this.setState({value:100});},0) 
  
  if(err.response)
-{ if (err.response.status <= 404){  
-   
+{ 
+    if (err.response.status <= 404)
+    {  
 
-  NotificationManager.warning('Warrning message', err.response.data, 3000);
- 
-
-  this.setState({trailstat:null})
-  setTimeout(()=>{this.setState({value:0});},2000) 
-
-}else  if (err.response.status >= 500 && err.response.status < 505){  
-   
-
-    NotificationManager.Error('Error message', err.response.data, 3000);
-   
-  
+    NotificationManager.warning('Warrning message', err.response.data, 3000);
     this.setState({trailstat:null})
     setTimeout(()=>{this.setState({value:0});},2000) 
+
+    }else  
+    if (err.response.status >= 500 && err.response.status < 505)
+    {  
+   
+    NotificationManager.Error('Error 500 message', err.response.data, 3000);  
+    this.setState({trailstat:null})
+    setTimeout(()=>this.setState({value:0}),2000) 
   
-  }
-}else    NotificationManager.error('Error message', 'Network Error!', 3000);
-clearTimeout(this.myVar);
-this.myVar = setTimeout(()=>{this.setState({value:0})}, 2000);  
- if(n==='undefined'){ 
-        NotificationManager.error('Error message', 'Database Connection problem!', 3000);
-        this.setState({value:100});
-    clearTimeout(this.myVar);
-     this.myVar = setTimeout(()=>{this.setState({value:0})}, 2000);  
-    
     }
+}
+else
+
+NotificationManager.error('Error message', 'Network Error!', 3000);
+clearTimeout(this.myVar);
+this.myVar = setTimeout(()=>{this.setState({value:0})}, 2000); 
+
+ if(gettrail==='undefined')
+{ 
+    NotificationManager.error('Error message', 'Database Connection problem!', 3000);
+    this.setState({value:100});
+    clearTimeout(this.myVar);
+    this.myVar = setTimeout(()=>{this.setState({value:0})}, 2000);  
+    
+}
 
  });
-     
-
-        
-      
-    }
-
- 
+}
     
+//This function to call the API getBalance to get the Balance Statement data
 
-async activateBalance(){
-    this.setState({kind:"warning"})
+async activateBalance()
+{
+    this.setState({kind:"warning"}) //Balance statement color if warning
     this.setState({balancestat:null});
     this.setState({trailstat:null});
-   var m,n  //http://localhost:4000/getBalance
-    n=  await axios.get('https://fullstack-accounting-backend.herokuapp.com/getBalance'
-    // , {
-	// headers: {
-	//   'Access-Control-Allow-Origin': 'http://localhost:4000/',
-	// }
-    // }
-    ) // eslint-disable-line no-unused-vars
+   var getSheet,getBalance  
+   getBalance=  await axios.get('https://fullstack-accounting-backend.herokuapp.com/getBalance')
     .then((response) => {
-        const data = response.data;
        
-        if(data.length===2){
-           // setTimeout(()=>{this.setState({kind:"danger"});},300) 
+        const data = response.data;
+        if(data.length===2)
+        {
             NotificationManager.warning('Warning message', 'No transactions yet!', 3000);
         }
         setTimeout(()=>{this.setState({value:100});},300) 
-       
-        
-       m= fixo(data);
+        getSheet = getBalanceSheet(data);
    
-       setTimeout(() => {
-        this.setState({value: 0});
-      }, 2000)
-      setTimeout(() => {
-        this.setState({kind: null});
-      }, 2000)
-  
-        setTimeout(()=> {
-            this.setState({balancestat:m});
-            
-           
-        
-           },1999)
- 
-           setTimeout(()=>{ NotificationManager.success('Success message', 'Data has been retrieved!', 3000);},1900)
-       })
-    .catch((err) => {        
-        if(n==='undefined'){
-            NotificationManager.error('Error message', 'Database Connection problem!', 3000);
-        this.setState({kind:"danger"}); this.setState({value:100});
-       
-        clearTimeout(this.myVar);
-         this.myVar = setTimeout(()=>{this.setState({value:0})}, 2000);  
-         if (err.response.status >= 500 && err.response.status < 505){  
-   
+       setTimeout(() => 
+       {
 
-            NotificationManager.Error('Error message', err.response.data, 3000);
-           
-          
+        this.setState({value: 0})}, 2000)
+        setTimeout(() => {this.setState({kind: null})}, 2000)
+        setTimeout(()=> {this.setState({balancestat:getSheet})},1999) 
+        setTimeout(()=>{ NotificationManager.success('Success message', 'Data has been retrieved!', 3000);},1900)
+       })
+    .catch((err) => { 
+
+        if(getBalance==='undefined')
+        {
+          NotificationManager.error('Error message', 'Database Connection problem!', 3000);
+
+          this.setState({kind:"danger"}); this.setState({value:100});     
+
+          clearTimeout(this.myVar);
+
+          this.myVar = setTimeout(()=>{this.setState({value:0})}, 2000);  
+
+        if (err.response.status >= 500 && err.response.status < 505)
+        {  
+
+          NotificationManager.Error('Error message', err.response.data, 3000);
+              
          
-            setTimeout(()=>{this.setState({value:0});},2000) 
+          setTimeout(()=>{this.setState({value:0});},2000) 
           
-          } 
+        } 
           
        
         }
         if(err.response)
-        { if (err.response.status <= 404){  
+        { 
+            if (err.response.status <= 404)
+        {  
            
         
           NotificationManager.warning('Warrning message', err.response.data, 3000);
@@ -539,139 +537,117 @@ async activateBalance(){
           this.setState({trailstat:null})
           setTimeout(()=>{this.setState({value:0});},2000) 
         
-        }else  if (err.response.status >= 500 && err.response.status < 505){  
-           
-        
+        }else 
+         if (err.response.status >= 500 && err.response.status < 505)
+         {   
             NotificationManager.Error('Error message', err.response.data, 3000);
-           
-          
             this.setState({trailstat:null})
             setTimeout(()=>{this.setState({value:0});},2000) 
           
-          }
-        }else    NotificationManager.error('Error message', 'Network Error!', 3000);
-        clearTimeout(this.myVar);
-        this.myVar = setTimeout(()=>{this.setState({value:0})}, 2000);  
-         if(n==='undefined'){ 
-                NotificationManager.error('Error message', 'Database Connection problem!', 3000);
-                this.setState({value:100});
-            clearTimeout(this.myVar);
-             this.myVar = setTimeout(()=>{this.setState({value:0})}, 2000);  
-            
-            }
-       
+         }
+        }
+        else  
+        { 
+           NotificationManager.error('Error message', 'Network Error!', 3000);
+           clearTimeout(this.myVar);
+           this.myVar = setTimeout(()=>{this.setState({value:0})}, 2000);  
+        }
     
     });
 
   
 }
-resetstate(e){
+//resetting states and BalanceStatement
+resetstate(e)
+{
   
     this.setState({kind:"secondary"})
-    this.setState({dvalue:null})
-    this.setState({cvalue:null})
-    setTimeout(()=>{  this.setState({balancestat:null});},1000)
-     setTimeout(()=>{this.setState({trailstat:null});},1000)
-     setTimeout(()=>{this.setState({caccn:null});},1000)
-     setTimeout(()=>{this.setState({daccn:null});},1000)
+    this.setState({debitValue:null})
+    this.setState({creditValue:null})
+    setTimeout(()=>{this.setState({balancestat:null});},1000)
+    setTimeout(()=>{this.setState({trailstat:null});},1000)
+    setTimeout(()=>{this.setState({CreditAccNo:null});},1000)
+    setTimeout(()=>{this.setState({debitAccNo:null});},1000)
     this.DisplayBalanceStatement.dd = null;
     setTimeout(()=>{this.setState({value:100});},300) 
     setTimeout(()=>{this.setState({value:0});},2000) 
    
-   document.getElementById('dvalue').value = null;
-   document.getElementById('cvalue').value = null;
-  document.getElementById('select2').selectedIndex = 0 
-  document.getElementById('select1').selectedIndex = 0 
-  setTimeout(() => {
-    this.setState({value: 0});
-  }, 1000)
+    document.getElementById('dvalue').value = null;
+    document.getElementById('cvalue').value = null;
+    document.getElementById('select2').selectedIndex = 0 
+    document.getElementById('select1').selectedIndex = 0 
+     
 } 
-async emptydata(e){
+//Emptying data from database
+async emptydata(e)
+{
     NotificationManager.error('', 'Database has been reseted !', 3000);
     this.setState({kind:"danger"})
     setTimeout(()=>{this.setState({value:100});},300) 
     setTimeout(()=>{this.setState({value:0});},2000) 
-
     await  axios.post('https://fullstack-accounting-backend.herokuapp.com/intializeData')
-    .then(() => {
-       
-     console.log("Data has been cleared")
-   
-       })
-    .catch((err) => {NotificationManager.warning('Error message', 'Error Reseting database!', 3000);
-        console.log("Error Emptying data",err.res);
-    });
+    .then(() => {console.log("Data has been cleared")})
 
-
-   
+    .catch((err) => {NotificationManager.warning('Error message', 'Error Reseting database!', 3000)});
+  
 }
+//Checking and inserting Data
 handleSubmit = async e => {
-  
-  
+
     setTimeout(()=>{this.setState({value:100});},300) 
     setTimeout(()=>{this.setState({value:0});},2000) 
-        e.preventDefault();
+
+     e.preventDefault();
      
-       if(this.state.dvalue ==null || isNaN(this.state.dvalue))
+       if(this.state.debitValue ==null || isNaN(this.state.debitValue))
       {
         NotificationManager.warning('Enter a Valid Debit Value!', 'Attention!', 2000); 
         this.setState({kind:"danger"})
         
         return
       } 
-       else if(this.state.cvalue==null || isNaN(this.state.cvalue))
+       else if(this.state.creditValue==null || isNaN(this.state.creditValue))
        {
-        NotificationManager.warning('Enter a Valid Credit Value!', 'Attention!', 2000); 
-        this.setState({kind:"danger"})
-        return
-      } 
+           NotificationManager.warning('Enter a Valid Credit Value!', 'Attention!', 2000); 
+           this.setState({kind:"danger"})
+           return
+  
+       } 
       else if(this.state.credit  === '')
       {
-        NotificationManager.warning('Select a Credit Account!', 'Attention!', 2000); 
-        this.setState({kind:"danger"})
-        return
+          NotificationManager.warning('Select a Credit Account!', 'Attention!', 2000); 
+          this.setState({kind:"danger"})
+          return
       }  
        else if(this.state.debit === '')
        {
-        NotificationManager.warning('Select a Debit Account!', 'Attention!', 2000); 
-        this.setState({kind:"danger"})
-        return
+          NotificationManager.warning('Select a Debit Account!', 'Attention!', 2000); 
+          this.setState({kind:"danger"})
+          return
       } 
       else if(this.state.debit === this.state.credit)
       {
-       NotificationManager.warning('You cant make a a transaction with the same account!', 'Attention!', 2000); 
-       this.setState({kind:"danger"})
-       return
-     } else {  setTimeout(()=>{ this.setState({kind:"success"})},150) }
-      
-        let data = {
+          NotificationManager.warning('You cant make a a transaction with the same account!', 'Attention!', 2000); 
+          this.setState({kind:"danger"})
+          return
+     } 
+     else 
+      {  setTimeout(()=>{ this.setState({kind:"success"})},150) }
+      //getting the data
+        let data =
+        {
             "credit": this.state.credit,
-            "cAccNo": this.state.caccn,
+            "cAccNo": this.state.CreditAccNo,
             "debit":this.state.debit,
-            "dAccNo":this.state.daccn,
-            "cvalue": this.state.cvalue,
-            "dvalue": this.state.dvalue,
-            
+            "dAccNo":this.state.debitAccNo,
+            "cvalue": this.state.creditValue,
+            "dvalue": this.state.debitValue,   
         }
        
         NotificationManager.info('Inserting!', 'Status!', 2000); 
-    
-    //fullstack-accounting-backend.herokuapp.com/savedata'
-    
-    //  await axios({
-       
-    //     method: 'POST',
-    //     withCredentials:true,
-    //    url:'http://fullstack-accounting-backend.herokuapp.com/savedata',
-    //     headers: {
-    //         'Accept': 'application/json',
-    //         'Content-Type': 'application/json;charset=UTF-8',
-    //         'Access-Control-Allow-Origin':'*'
-          
-    //       },
-    //       data: JSON.stringify(body)
+//Posting the data using Fetch
     return fetch('https://fullstack-accounting-backend.herokuapp.com/savedata', {
-        
+
         method: 'POST',
         body: JSON.stringify(data),
         headers: {
@@ -680,97 +656,37 @@ handleSubmit = async e => {
             'Access-Control-Allow-Origin':'*'
           },
     })
-    .then( setTimeout(()=>{ NotificationManager.success('Success message', 'Data has been inserted!', 2000);},2100),this.resetstate() )
+    .then( setTimeout(()=>{ NotificationManager.success('Success message', 'Data has been inserted!', 2000);},2100),
+           this.resetstate())
   
-        
-    .catch(error => {
-        
+    .catch(error => {        
         if(error.response) { 
-            if (error.response.status === 404){  
-   
 
-                NotificationManager.warning('Warrning message', error.response.data, 3000);
-               
-              
-        
+            if (error.response.status === 404)
+            {  
+
+                NotificationManager.warning('Warrning message', error.response.data, 3000);       
                 setTimeout(()=>{this.setState({value:0});},2000) 
               
-              }
-            /* the request was made and the server responded
-            with a status code that falls out of the range of 2xx */
+            }
+
             console.log("Error While inserting ! ",error.response.data)
           }
-        //   if (err.response.status >= 500 && err.response.status < 505){  
-           
-        
-        //     NotificationManager.Error('Error message', err.response.data, 3000);
+
         console.error('There was an error!', error);
         NotificationManager.error("error", 'Click me!', 5000, () => {
             alert(error);
           });
+        
          return
     });
 
     }
   
+//Balance Statement component
+DisplayBalanceStatement = (props) => {
 
-    DisplayBalanceStatement = (props) => {
- 
-  
-    var u=[{}];
-
-  
-    u =props.a1
- 
-   
-
-
-
-
-  u.sort(compare);
-
-var disdata=[]
-
-if(this.state.bs)
-var s= this.state.bs
-
-
-
-
-
-var dd = null;
-var  cc = null;
-if(s && typeof s[1] !== 'undefined'){
-   dd =s[0].debitbook;
-   cc = s[1].creditbook;
- 
-  }
- 
- 
-    
-if(dd)
-{
-
-    dd.forEach(element => 
-        disdata.push(element)
-        );
-
-  
-}
-
-
-
-
-if(cc){
-    cc.forEach(element => 
-        disdata.push(element)
-        );
-}
-
-  disdata.sort(comparestr)
-
-
- if((dd && cc )|| this.state.balancestat){  return ( 
+ if(this.state.balancestat){  return ( 
     <div className="ag-theme-alpine" style={ {height: '400px', width: '800px', display:"inline-block"} }>
         
     <AgGridReact
@@ -786,7 +702,7 @@ if(cc){
           </div>
 
     );
-   
+  //if Trail Balance statement is fetched show it 
 }else if(this.state.trailstat){
     return ( 
         <div className="ag-theme-alpine" style={ {height: '400px', width: '900px', display:"inline-block"} }>
@@ -802,28 +718,17 @@ if(cc){
               </div>
     
         );
-
+//Else Don't show anything
 }else return null
-     
-
-         
-
-      
-      }
-           
-       
-           
-    render() { 
-     
+ }
+render() { 
         return (  
              <div>
-        <br /><br />
-              <section className="clean-block clean-hero"   >
-    
+                 <br /><br />
+              <section className="clean-block clean-hero"   >    
               <div className="text"><p><font color='#2e20a4'><b></b></font></p>
-
-            <table className="table table-borderless table-light">
-            <thead className="thead-light">
+              <table className="table table-borderless table-light">
+              <thead className="thead-light">
     <tr>
       <th scope="col" colSpan='4'><font  size = '4' color='#2e20a4'>Fill the balance Sheet</font></th>
     </tr>  
@@ -889,70 +794,50 @@ if(cc){
  <td><button type="submit" onClick={this.activateBalance.bind(this)}   className="btn btn-outline-info"> View Balance Sheet</button></td></tr>
  <tr><td colSpan='2'> <button type="reset"  onClick={this.emptydata.bind(this)} className="btn btn-outline-danger">Reset Database</button></td></tr>
  </tbody>
-                </table>
-           
-                </div>       
-           
-            
-                </section>       
-           
-           
-                <NotificationContainer/>
-          
-           <div> 
-           {(this.state.value!==0)?  <ProgressBar animated variant={this.state.kind} now={this.state.value} /> : null}
-          
-       </div>
-          <div className= 'relative' id ='balance'>   
-          <this.DisplayBalanceStatement a1={this.state.d} a2={this.state.c}/>  
-  
-          
-     
-          </div>
+ </table>
+ </div>       
+ </section>       
+ <NotificationContainer/>
+ <div> 
+ {(this.state.value!==0)?  <ProgressBar animated variant={this.state.kind} now={this.state.value} /> : null}
+ </div>
+ <div className= 'relative' id ='balance'>   
+ <this.DisplayBalanceStatement />  
+ </div>
+ <section className="clean-block features">
+ <div className="container">
+ <div className="row justify-content-center">
+ <div className="col-md-5 feature-box">
+ <i className="icon-star icon"></i>
+ <h4>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Balance Sheet</h4>
+ <p>&nbsp;financial statement that reports a company's assets, liabilities and shareholders' equity.</p>
+ </div>
+ <div className="col-md-5 feature-box"><i className="icon-pencil icon"></i>
+ <h4>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Income Statement</h4>
+ <p>&nbsp;financial statement&nbsp;that shows you how profitable your business was over a given reporting period.</p>
+ </div>
+ <div className="col-md-5 feature-box"><i className="icon-screen-smartphone icon"></i>
+ <h4>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Result</h4>
+ <p>financial statement that reports the Result of profit or loss at the end of the year</p>
+ </div>
+ <div className="col-md-5 feature-box"><i className="icon-refresh icon"></i>
+ <h4>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Calculations</h4>
+ <p>TVA calculations and loans and other calculations&nbsp;</p>
+ </div>
+</div>
+</div>
+</section>
+<section className="clean-block about-us">
+<div className="container">
+<div className="block-heading">
+<h2 className="text-info">About Us</h2>
+<p>This Website is made by Bootstrap and Reactjs with&nbsp;MongoDB Database to make accounting calculations&nbsp;</p>
+</div>
+</div>
+</section>
+</div>
 
-         
-              
-  
-          
-           
-
-           
-       
-        <section className="clean-block features">
-            <div className="container">
-                <div className="row justify-content-center">
-                    <div className="col-md-5 feature-box">
-                        <i className="icon-star icon"></i>
-                        <h4>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Balance Sheet</h4>
-                        <p>&nbsp;financial statement that reports a company's assets, liabilities and shareholders' equity.</p>
-                    </div>
-                    <div className="col-md-5 feature-box"><i className="icon-pencil icon"></i>
-                        <h4>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Income Statement</h4>
-                        <p>&nbsp;financial statement&nbsp;that shows you how profitable your business was over a given reporting period.</p>
-                    </div>
-                    <div className="col-md-5 feature-box"><i className="icon-screen-smartphone icon"></i>
-                        <h4>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Result</h4>
-                        <p>financial statement that reports the Result of profit or loss at the end of the year</p>
-                    </div>
-                    <div className="col-md-5 feature-box"><i className="icon-refresh icon"></i>
-                        <h4>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Calculations</h4>
-                        <p>TVA calculations and loans and other calculations&nbsp;</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-        <section className="clean-block about-us">
-            <div className="container">
-                <div className="block-heading">
-                    <h2 className="text-info">About Us</h2>
-                    <p>This Website is made by Bootstrap and Reactjs with&nbsp;MongoDB Database to make accounting calculations&nbsp;</p>
-                </div>
-            </div>
-        </section>
-   
-             </div>
-
-        )
-    }
+)
+ }
 }
 export default BalanceStatement 
