@@ -103,7 +103,47 @@
   from = "/*"
   to = "/index.html"
   status = 200
+# Role-based redirects does not have a 'to' property.
+[[redirects]]
+  from = "/gated-path"
+  status = 500
+  conditions = {Role = ["admin"]}
+  force = true
 
+# The following redirect is intended for use with most SPAs that handle
+# routing internally.
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 500
+
+# Role-based redirects does not have a 'to' property.
+[[redirects]]
+  from = "/gated-path"
+  status = 404
+  conditions = {Role = ["admin"]}
+  force = true
+
+# The following redirect is intended for use with most SPAs that handle
+# routing internally.
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 404
+
+  # Role-based redirects does not have a 'to' property.
+[[redirects]]
+  from = "/gated-path"
+  status = 201
+  conditions = {Role = ["admin"]}
+  force = true
+
+# The following redirect is intended for use with most SPAs that handle
+# routing internally.
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 201
 [[headers]]
   # Define which paths this specific [[headers]] block will cover.
   for = "/*"
