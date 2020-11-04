@@ -502,7 +502,7 @@ async activateBalance()
         setTimeout(()=>{ NotificationManager.success('Success message', 'Data has been retrieved!', 3000);},1900)
        })
     .catch((err) => { 
-
+        this.setState({kind:"danger"}); this.setState({value:100});
         if(getBalance==='undefined')
         {
           NotificationManager.error('Error message', 'Database Connection problem!', 3000);
@@ -515,10 +515,11 @@ async activateBalance()
 
         if (err.response.status >= 500 && err.response.status < 505)
         {  
-
+            this.setState({kind:"danger"}); this.setState({value:100});
           NotificationManager.Error('Error message', err.response.data, 3000);
               
-         
+          this.myVar = setTimeout(()=>{this.setState({value:0})}, 2000);  
+
           setTimeout(()=>{this.setState({value:0});},2000) 
           
         } 
@@ -537,17 +538,10 @@ async activateBalance()
           this.setState({trailstat:null})
           setTimeout(()=>{this.setState({value:0});},2000) 
         
-        }else 
-         if (err.response.status >= 500 && err.response.status < 505)
-         {   
-            NotificationManager.Error('Error message', err.response.data, 3000);
-            this.setState({trailstat:null})
-            setTimeout(()=>{this.setState({value:0});},2000) 
-          
-         }
+        }
         }
         else  
-        { 
+        {  console.log(err)
            NotificationManager.error('Error message', 'Network Error!', 3000);
            clearTimeout(this.myVar);
            this.myVar = setTimeout(()=>{this.setState({value:0})}, 2000);  
@@ -666,6 +660,12 @@ handleSubmit = async e => {
             {  
 
                 NotificationManager.warning('Warrning message', error.response.data, 3000);       
+                setTimeout(()=>{this.setState({value:0});},2000) 
+              
+            }else if (error.response.status === 503)
+            {  
+
+                NotificationManager.warning('Error message', "503 Service Unavailable Server Error !", 3000);       
                 setTimeout(()=>{this.setState({value:0});},2000) 
               
             }
