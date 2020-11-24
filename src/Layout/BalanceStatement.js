@@ -410,7 +410,7 @@ async ViewTrailBalance()
     this.setState({trailstat:null});
    
                                 //'https://fullstack-accounting-backend.herokuapp.com/getTrailBalance'
- var gettrail=  await axios.get('http://localhost:4000/getTrailBalance'
+ var gettrail=  await axios.get('https://fullstack-accounting-backend.herokuapp.com/getTrailBalance'
 
     ) 
 
@@ -482,7 +482,7 @@ async activateBalance()
     this.setState({balancestat:null});
     this.setState({trailstat:null});
    var getSheet,getBalance      //'https://fullstack-accounting-backend.herokuapp.com/getBalance'
-   getBalance=  await axios.get('http://localhost:4000/getBalance')
+   getBalance=  await axios.get('https://fullstack-accounting-backend.herokuapp.com/getBalance')
     .then((response) => {
        
         const data = response.data;
@@ -580,7 +580,7 @@ async emptydata(e)
     setTimeout(()=>{this.setState({value:100});},300) 
     setTimeout(()=>{this.setState({value:0});},2000) 
     //'https://fullstack-accounting-backend.herokuapp.com/intializeData'
-    await  axios.post('http://localhost:4000/intializeData')
+    await  axios.post('https://fullstack-accounting-backend.herokuapp.com/intializeData')
     .then(() => {console.log("Data has been cleared")})
 
     .catch((err) => {NotificationManager.warning('Error message', 'Error Reseting database!', 3000)});
