@@ -37,7 +37,7 @@ function setaccName(accno)
             break;
 
         case 112:
-            name="Accounts Receivable";
+            name="Accounts Receivable"; //Assets
             break; 
 
         case 157:
@@ -49,11 +49,11 @@ function setaccName(accno)
             break;
 
         case 200:
-            name="Notes Payable";
+            name="Notes Payable"; //liability
             break;
 
         case 201:
-            name="Accounts Payable";
+            name="Accounts Payable"; //liability
             break;
 
         case 209:
@@ -95,7 +95,7 @@ function setaccName(accno)
     return name;
 } 
 /***
- * function which Produce Balance Statement it takes each Account Object from the backend and call setaccName to setnames 
+ * function which Produce Trailbalance Statement it takes each Account Object from the backend and call setaccName to setnames 
  * and calculates the total 
  *   
  */
@@ -179,7 +179,7 @@ export class BalanceStatement extends Component {
      
     this.state = { credit: "",debit: "",debitAccNo :null, CreditAccNo:null ,debitValue: null,creditValue: null,kind:null,
         
-    debitArr:[],creditArr:[], balancestat:null,trailstat:null,creditsum:null,debitsum:null,value:0,
+    debitArr:[],creditArr:[], balancestat:null,trailstat:null,creditsum:null,debitsum:null,value:0,message:'',
         
         columnDefs: [
             
@@ -409,8 +409,8 @@ async ViewTrailBalance()
     this.setState({balancestat:null});
     this.setState({trailstat:null});
    
-
- var gettrail=  await axios.get('https://fullstack-accounting-backend.herokuapp.com/getTrailBalance'
+                                //'https://fullstack-accounting-backend.herokuapp.com/getTrailBalance'
+ var gettrail=  await axios.get('http://localhost:4000/getTrailBalance'
 
     ) 
 
@@ -481,8 +481,8 @@ async activateBalance()
     this.setState({kind:"warning"}) //Balance statement color if warning
     this.setState({balancestat:null});
     this.setState({trailstat:null});
-   var getSheet,getBalance  
-   getBalance=  await axios.get('https://fullstack-accounting-backend.herokuapp.com/getBalance')
+   var getSheet,getBalance      //'https://fullstack-accounting-backend.herokuapp.com/getBalance'
+   getBalance=  await axios.get('http://localhost:4000/getBalance')
     .then((response) => {
        
         const data = response.data;
@@ -579,7 +579,8 @@ async emptydata(e)
     this.setState({kind:"danger"})
     setTimeout(()=>{this.setState({value:100});},300) 
     setTimeout(()=>{this.setState({value:0});},2000) 
-    await  axios.post('https://fullstack-accounting-backend.herokuapp.com/intializeData')
+    //'https://fullstack-accounting-backend.herokuapp.com/intializeData'
+    await  axios.post('http://localhost:4000/intializeData')
     .then(() => {console.log("Data has been cleared")})
 
     .catch((err) => {NotificationManager.warning('Error message', 'Error Reseting database!', 3000)});
@@ -626,7 +627,7 @@ handleSubmit = async e => {
           return
      } 
      else 
-      {  setTimeout(()=>{ this.setState({kind:"success"})},150) }
+      {   this.setState({kind:"success"})}
       //getting the data
         let data =
         {
@@ -640,49 +641,42 @@ handleSubmit = async e => {
        
         NotificationManager.info('Inserting!', 'Status!', 2000); 
 //Posting the data using Fetch
-    return fetch('https://fullstack-accounting-backend.herokuapp.com/savedata', {
-
+ await fetch('http://localhost:4000/savedata',{
         method: 'POST',
-        body: JSON.stringify(data),
+    
         headers: {
             'Accept': 'application/json',
             'Content-Type': 'application/json;charset=UTF-8',
             'Access-Control-Allow-Origin':'*'
           },
+          body: JSON.stringify(data),
     })
-    .then( setTimeout(()=>{ NotificationManager.success('Success message', 'Data has been inserted!', 2000);},2100),
-           this.resetstate())
-  
-    .catch(error => {        
-        if(error.response) { 
+    .then(response =>response.json())
+   
+    .then((response) => {
+        this.setState({message:response.message})
 
-            if (error.response.status === 404)
-            {  
-
-                NotificationManager.warning('Warrning message', error.response.data, 3000);       
-                setTimeout(()=>{this.setState({value:0});},2000) 
-              
-            }else if (error.response.status === 503)
-            {  
-
-                NotificationManager.warning('Error message', "503 Service Unavailable Server Error !", 3000);       
-                setTimeout(()=>{this.setState({value:0});},2000) 
-              
-            }
-
-            console.log("Error While inserting ! ",error.response.data)
-          }
-
-        console.error('There was an error!', error);
-        NotificationManager.error("error", 'Click me!', 5000, () => {
-            alert(error);
-          });
-        
-         return
-    });
-
+   
     }
-  
+    )
+    
+    .catch(function(err) {
+        console.log(err);
+    });
+    var ar=[], n=0
+    ar = this.state.message.split('\n')
+    console.log(ar)
+    for(const msg in ar) {
+        n+=1000
+        if(ar[msg].length!==0)
+      {   
+       setTimeout(NotificationManager.info(ar.pop(), 'Info!', 5000),n)  
+     
+}
+
+}
+ar = null
+}
 //Balance Statement component
 DisplayBalanceStatement = (props) => {
 
