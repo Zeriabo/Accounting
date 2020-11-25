@@ -641,7 +641,7 @@ handleSubmit = async e => {
        
         NotificationManager.info('Inserting!', 'Status!', 2000); 
 //Posting the data using Fetch
- await fetch('http://localhost:4000/savedata',{
+ await fetch('https://fullstack-accounting-backend.herokuapp.com/savedata',{
         method: 'POST',
     
         headers: {
