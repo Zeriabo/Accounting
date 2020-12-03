@@ -13,3 +13,8 @@ The App let you :
 - View the Balance Statement
 - View the Income Statement
 - Reset the Database 
+
+<a href="https://github.com/Zeriabo/Accounting/issues"><img alt="GitHub issues" src="https://img.shields.io/github/issues/Zeriabo/Accounting"></a>
+<a href="https://github.com/Zeriabo/Accounting/network"><img alt="GitHub forks" src="https://img.shields.io/github/forks/Zeriabo/Accounting"></a>
+<a href="https://github.com/Zeriabo/Accounting/stargazers"><img alt="GitHub stars" src="https://img.shields.io/github/stars/Zeriabo/Accounting"></a>
+<a href="https://github.com/Zeriabo/Accounting"><img alt="GitHub license" src="https://img.shields.io/github/license/Zeriabo/Accounting?logo=Reactjs"></a>
