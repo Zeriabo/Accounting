@@ -15,7 +15,7 @@ export class Result extends Component {
       type: this.state.type,
     };
 
-    return fetch("http://localhost:5001/result", {
+    return fetch(process.env.REACT_APP_SERVER_URL + "/result", {
       method: "POST",
       body: JSON.stringify(data),
       headers: {

@@ -448,7 +448,7 @@ export class BalanceStatement extends Component {
     this.setState({ trailstat: null });
 
     var gettrail = await axios
-      .get("http://localhost:5001/api/v1/ledger")
+      .get(process.env.REACT_APP_SERVER_URL + "/api/v1/ledger")
 
       .then((response) => {
         if (response.data.success) {
@@ -548,9 +548,9 @@ export class BalanceStatement extends Component {
     this.setState({ kind: "warning" }); //Balance statement color if warning
     this.setState({ balancestat: null });
     this.setState({ trailstat: null });
-    var getSheet, getBalance; //'https://localhost:5001/getBalance'
+    var getSheet, getBalance;
     getBalance = await axios
-      .get("http://localhost:5001/api/v1/balancesheet/")
+      .get(process.env.REACT_APP_SERVER_URL + "/api/v1/balancesheet/")
       .then((response) => {
         const data = response.data;
         if (data.length === 2) {
@@ -678,9 +678,9 @@ export class BalanceStatement extends Component {
     setTimeout(() => {
       this.setState({ value: 0 });
     }, 2000);
-    //'https://localhost:5001/intializeData'
+
     await axios
-      .post("http://localhost:5001/intializedata")
+      .post(process.env.SERVER_URL + "/intializedata")
       .then(() => {
         console.log("Data has been cleared");
       })
@@ -766,7 +766,7 @@ export class BalanceStatement extends Component {
     //Posting the data using Fetch
 
     axios
-      .post("http://localhost:5001/api/v1/ledger/savedata", {
+      .post(process.env.REACT_APP_SERVER_URL + "/api/v1/ledger/savedata", {
         data,
       })
 

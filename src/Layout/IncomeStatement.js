@@ -460,7 +460,7 @@ export class IncomeStatement extends Component {
     this.setState({ trailstat: null });
 
     var gettrail = await axios
-      .get("https://localhost:5001/getTrailBalance")
+      .get(process.env.REACT_APP_SERVER_URL + "/getTrailBalance")
 
       .then((response) => {
         if (response.statusText === "OK") {
@@ -556,7 +556,7 @@ export class IncomeStatement extends Component {
     this.setState({ trailstat: null });
     var getSheet, getBalance;
     getBalance = await axios
-      .get("http://localhost:4000/getBalance", {
+      .get(process.env.REACT_APP_SERVER_URL + "/getBalance", {
         headers: {
           "Access-Control-Allow-Origin": "*",
         },
@@ -689,7 +689,7 @@ export class IncomeStatement extends Component {
       this.setState({ value: 0 });
     }, 2000);
     await axios
-      .post("https://localhost:5001/intializeData")
+      .post(process.env.REACT_APP_SERVER_URL + "/intializeData")
       .then(() => {
         console.log("Data has been cleared");
       })
@@ -774,7 +774,7 @@ export class IncomeStatement extends Component {
 
     NotificationManager.info("Inserting!", "Status!", 2000);
     //Posting the data using Fetch
-    return fetch("https://localhost:5001/saveIncomedata", {
+    return fetch(process.env.REACT_APP_SERVER_URL + "/saveIncomedata", {
       method: "POST",
       body: JSON.stringify(data),
       headers: {
