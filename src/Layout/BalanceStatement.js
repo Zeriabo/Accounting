@@ -22,7 +22,6 @@ import "ag-grid-community/dist/styles/ag-theme-alpine.css";
  */
 function setaccName(accno) {
   var name = "";
-
   switch (accno) {
     case 101:
       name = "Bank/Cash at Bank";
@@ -448,15 +447,19 @@ export class BalanceStatement extends Component {
     this.setState({ balancestat: null });
     this.setState({ trailstat: null });
 
-    //'https://localhost:5001/getTrailBalance'
     var gettrail = await axios
       .get("http://localhost:5001/api/v1/ledger")
 
       .then((response) => {
-        console.log(response);
         if (response.data.success) {
           const data = response.data.body;
           const res = getTrailBalance(data);
+          res.forEach((result) => {
+            result.dname = setaccName(result.dname);
+          });
+          res.forEach((result) => {
+            result.mname = setaccName(result.mname);
+          });
           this.setState({ kind: "success" });
           setTimeout(() => {
             this.setState({ value: 100 });
